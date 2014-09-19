@@ -13,5 +13,10 @@ class flapjack::service {
       File['/etc/flapjack/flapjack-config.yaml'],
     ]
   }
-
+#we don't use embeded redis
+  service { 'redis-flapjack':
+    ensure     => stopped,
+    enable     => false,
+  }
+  
 }
