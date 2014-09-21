@@ -16,38 +16,26 @@ class flapjack::config {
     require => [ Package['flapjack'] ],
   }
 
-  file { '/etc/flapjack/flapjack-config.yaml':
-    source  => 'puppet:///modules/flapjack/etc/flapjack/flapjack-config.yaml',
+  file { '/etc/flapjack/flapjack_config.yaml':
+    content  => template('flapjack/flapjack_config.yaml.erb'),
   }
 
-  file { '/etc/init.d/flapjack-web-api':
-    source  => 'puppet:///modules/flapjack/etc/init.d/flapjack-web-api',
+  #file { '/etc/init.d/flapjack-web-api':
+  #  source  => 'puppet:///modules/flapjack/etc/init.d/flapjack-web-api',
+  #}
+
+  # install and configure logrotate
+  if ! defined(Package['logrotate']) {
+    ensure_packages['logrotate']
   }
 
-  logrotate::rule { 'flapjack-log':
-    path          => '/var/log/flapjack/*.log',
-    maxage        => 31,
-    size          => '100M',
-    dateext       => true,
-    dateformat    => '.%Y%m%d',
-    copy          => true,
-    copytruncate  => true,
-    compress      => true,
-    compresscmd   => '/bin/bzip2',
-    compressext   => '.bz2',
-  }
-
-  logrotate::rule { 'flapjack-output':
-    path          => '/var/log/flapjack/*.output',
-    maxage        => 31,
-    size          => '100M',
-    dateext       => true,
-    dateformat    => '.%Y%m%d',
-    copy          => true,
-    copytruncate  => true,
-    compress      => true,
-    compresscmd   => '/bin/bzip2',
-    compressext   => '.bz2',
-  }
+  file { "/etc/logrotate.d/flapjack":
+    ensure  => file,
+    content => template('flapjack/flapjack_logrotate.conf.erb'),
+    require => [
+      Package['logrotate'],
+      File["/etc/flapjack"],
+    ]
+  }  
 
 }
