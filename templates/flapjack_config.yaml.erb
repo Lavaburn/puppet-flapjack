@@ -1,16 +1,16 @@
 ---
 
 production:
-  pid_dir: /var/run/flapjack/
-  log_dir: /var/log/flapjack/
+  pid_dir: <%= @pid_dir %>
+  log_dir: <%= @log_dir %>
   daemonize: yes
   logger:
-    level: INFO
-    syslog_errors: yes
+    level: <%= @log_level %>
+    syslog_errors: <%= @syslog_errors %>
   redis:
-    host: 127.0.0.1
-    port: 6380
-    db: 0
+    host: <%= @redis_host %>
+    port: <%= @redis_port %>
+    db: <%= @redis_db %>
   # Processes monitoring events off the *events* queue (a redis list) and decides
   # what actions to take (generate notification event, record state changes, etc)
   processor:
