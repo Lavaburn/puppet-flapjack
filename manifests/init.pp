@@ -11,7 +11,7 @@
 # [*embedded_redis*]
 #   use embedded redis. Default: true
 # [*redis_host*]
-#   redis host. Default: localhost
+#   redis host. Default: 127.0.0.1
 # [*redis_port*]
 #   redis port. Default: 6380
 # [*redis_db*]
@@ -110,7 +110,7 @@
 #  Default: yes
 # [*gateways_sms_twilio_account_sid*]
 #  Default: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-# [*gateways_sms_twilio_auth_toke*]
+# [*gateways_sms_twilio_auth_token*]
 #  Default: "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
 # [*gateways_sms_twilio_from*]
 #  Default: "+1xxxxxxxxxx"
@@ -220,7 +220,7 @@ class flapjack (
   $log_level                                   = INFO,
   $syslog_errors                               = yes,
   $embedded_redis                              = true,
-  $redis_host                                  = localhost,
+  $redis_host                                  = '127.0.0.1',
   $redis_port                                  = 6380,
   $redis_db                                    = 0,
   $processor_enabled                           = yes,
@@ -231,7 +231,7 @@ class flapjack (
   $new_check_scheduled_maintenance_duration    = '100 years',
   $new_check_scheduled_maintenance_ignore_tags = [ 'bypass_ncsm' ],
   $processor_log_level                         = INFO,
-  $processor_syslog_errors                     = true,
+  $processor_syslog_errors                     = yes,
   $notifier_enabled                            = yes,
   $notifier_queue                              = notifications,
   $notifier_email_queue                        = email_notifications,
@@ -250,7 +250,7 @@ class flapjack (
   $ncsa_receiver_fifo                          = '/var/lib/nagios3/rw/nagios.cmd',
   $gateways_email_enabled                      = no,
   $gateways_email_queue                        = email_notifications,
-  $gateways_email_log_level                     = INFO,
+  $gateways_email_log_level                    = INFO,
   $gateways_email_syslog_errors                = yes,
   $gateways_email_smtp_host                    = '127.0.0.1',
   $gateways_email_smtp_port                    = 1025,
@@ -263,14 +263,14 @@ class flapjack (
   $gateways_sms_log_level                      = INFO,
   $gateways_sms_syslog_errors                  = yes,
   $gateways_sms_endpoint                       = 'https://www.messagenet.com.au/dotnet/Lodge.asmx/LodgeSMSMessage',
-  $gateways_sms_endpoint_username              = username,
-  $gateways_sms_endpoint_password              = password,
+  $gateways_sms_endpoint_username              = ermahgerd,
+  $gateways_sms_endpoint_password              = xxxx,
   $gateways_sms_twilio_enabled                 = no,
   $gateways_sms_twilio_queue                   = sms_twilio_notifications,
   $gateways_sms_twilio_log_level               = INFO,
   $gateways_sms_twilio_syslog_errors           = yes,
   $gateways_sms_twilio_account_sid             = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,
-  $gateways_sms_twilio_auth_toke               = yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy,
+  $gateways_sms_twilio_auth_token              = yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy,
   $gateways_sms_twilio_from                    = '+1xxxxxxxxxx',
   $gateways_sns_enabled                        = no,
   $gateways_sns_queue                          = sns_notifications,
@@ -284,7 +284,7 @@ class flapjack (
   $gateways_jabber_password                    = good-password,
   $gateways_jabber_alias                       = 'flapjack',
   $gateways_jabber_identifiers                 = [ '@flapjack' ],
-  $gateways_jabber_rooms                       = [ 'gimp@conference.jabber.example.com' ],
+  $gateways_jabber_rooms                       = [ 'gimp@conference.jabber.example.com', 'log@conference.jabber.example.com' ],
   $gateways_jabber_log_level                   = INFO,
   $gateways_jabber_syslog_errors               = yes,
   $gateways_pagerduty_enabled                  = no,
@@ -298,14 +298,14 @@ class flapjack (
   $web_access_log                              = 'web_access.log',
   $web_api_url                                 = 'http://localhost:3081/',
 #  $logo_image_path                             = '/etc/flapjack/web/custom_logo/flapjack-2013-notext-transparent-300-300.png',
-  $web_log_level                                = INFO,
+  $web_log_level                               = INFO,
   $web_syslog_errors                           = yes,
   $jsonapi_enabled                             = yes,
   $jsonapi_port                                = 3081,
   $jsonapi_timeout                             = 300,
   $jsonapi_access_log                          = 'jsonapi_access.log',
   $jsonapi_base_url                            = 'http://localhost:3081/',
-  $jsonapi_log_level                            = INFO,
+  $jsonapi_log_level                           = INFO,
   $jsonapi_syslog_errors                       = yes,
   $oobetet_enabled                             = no,
   $oobetet_server                              = 'jabber.example.com',
@@ -317,9 +317,9 @@ class flapjack (
   $oobetet_watched_entity                      = 'foo.example.com',
   $oobetet_max_latency                         = 300,
   $oobetet_pagerduty_contact                   = 11111111111111111111111111111111,
-  $oobetet_jabber_rooms                        = 'flapjacktest@conference.jabber.example.com',
-  $oobetet_log_level                            = INFO,
-  $jsonapi_oobetet_errors                      = yes,
+  $oobetet_jabber_rooms                        = ['flapjacktest@conference.jabber.example.com', 'gimp@conference.jabber.example.com', 'log@conference.jabber.example.com'],
+  $oobetet_log_level                           = INFO,
+  $jsonapi_oobetet_syslog_errors               = yes,
 
 ) {
 

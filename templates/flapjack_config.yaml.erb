@@ -27,12 +27,12 @@ production:
     # You can disable this setting by specifying 0 seconds.
     new_check_scheduled_maintenance_duration: <%= @new_check_scheduled_maintenance_duration %>
     new_check_scheduled_maintenance_ignore_tags:
-    <% @new_check_scheduled_maintenance_ignore_tags.each do |tag| -%>
+<% @new_check_scheduled_maintenance_ignore_tags.each do |tag| -%>
       - <%= tag %>
-    <% end -%>
+<% end -%>
     logger:
       level: <%= @processor_log_level %>
-      syslog_errors: <%= @ %>
+      syslog_errors: <%= @processor_syslog_errors %>
   # Processes notification events off the *notifications* queue (a redis list) and
   # works out who to notify, and on which media, and with what kind of notification
   # message. It then creates jobs for the various notification gateways below.
@@ -41,7 +41,7 @@ production:
     queue: <%= @notifier_queue %>
     email_queue: <%= @notifier_email_queue %>
     sms_queue: <%= @notifier_sms_queue %>
-    sms_twilio_queue: <%= @notifier_twilio_queue %>
+    sms_twilio_queue: <%= @notifier_sms_twilio_queue %>
     sns_queue: <%= @notifier_sns_queue %>
     jabber_queue: <%= @notifier_jabber_queue %>
     pagerduty_queue: <%= @notifier_pagerduty_queue %>
@@ -94,8 +94,8 @@ production:
       # the redis queue this pikelet will look for notifications on
       queue: <%= @gateways_sms_queue %>
       endpoint: '<%= @gateways_sms_endpoint %>'
-      username: "<%= @gateways_sms_username %>"
-      password: "<%= @gateways_sms_password %>"
+      username: "<%= @gateways_sms_endpoint_username %>"
+      password: "<%= @gateways_sms_endpoint_password %>"
       logger:
         level: <%= @gateways_sms_log_level %>
         syslog_errors: <%= @gateways_sms_syslog_errors %>
@@ -112,7 +112,7 @@ production:
       from: "<%= @gateways_sms_twilio_from %>"
       logger:
         level: <%= @gateways_sms_twilio_log_level %>
-        syslog_errors: <%= @ateways_sms_twilio_syslog_errors %>
+        syslog_errors: <%= @gateways_sms_twilio_syslog_errors %>
       # location of custom alert templates
       # location of custom alert templates
       #templates:
@@ -120,12 +120,12 @@ production:
       #  alert.text: '/etc/flapjack/templates/sms_twilio/alert.text.erb'
     # Generates SNS notifications
     sns:
-      enabled: <%= @gateways_sms_sns_enabled %>
-      queue: <%= @gateways_sms_sns_queue %>
+      enabled: <%= @gateways_sns_enabled %>
+      queue: <%= @gateways_sns_queue %>
       #region_name: us-east-1
       # Don't forget to use an IAM user's credentials here so revocation is easy!
-      access_key: <%= @gateways_sms_sns_access_key %>
-      secret_key: <%= @gateways_sms_sns_secret_key %>
+      access_key: <%= @gateways_sns_access_key %>
+      secret_key: <%= @gateways_sns_secret_key %>
     # Connects to an XMPP (jabber) server, sends notifications (to rooms and individuals),
     # handles acknowledgements from jabber users and other commands.
     jabber:
@@ -139,14 +139,14 @@ production:
       alias: "<%= @gateways_jabber_alias %>"
       # List of strings that this pikelet user will respond to
       identifiers:
-      <% @jabber_identifier.each do |identifier| -%>
-      - "<%= identifier %>""
-      <% end -%>
+<% @gateways_jabber_identifiers.each do |identifier| -%>
+        - "<%= identifier %>"
+<% end -%>
       # the Multi-User Chats the pikelet should join and announce to
       rooms:
-      <% @jabber_rooms.each do |room| -%>
-      - "<%= room %>""
-      <% end -%>      
+<% @gateways_jabber_rooms.each do |room| -%>
+        - "<%= room %>"
+<% end -%>      
       logger:
         level: <%= @gateways_jabber_log_level %>
         syslog_errors: <%= @gateways_jabber_syslog_errors %>
@@ -173,7 +173,7 @@ production:
       timeout: <%= @web_timeout %>
       # Seconds between auto_refresh of entities/checks pages.  Set to 0 to disable
       auto_refresh: <%= @web_auto_refresh %>
-      access_log: "<%= @web_access_log %>"
+      access_log: "<%= @log_dir %><%= @web_access_log %>"
       api_url: "<%= @web_api_url %>"
       # Full path to location of logo file, e.g. /etc/flapjack/custom_logo.png
       #logo_image_path: "/etc/flapjack/web/custom_logo/flapjack-2013-notext-transparent-300-300.png"
@@ -185,7 +185,7 @@ production:
       enabled: <%= @jsonapi_enabled %>
       port: <%= @jsonapi_port %>
       timeout: <%= @jsonapi_timeout %>
-      access_log: "<%= @jsonapi_timeout %>"
+      access_log: "<%= @log_dir %><%= @jsonapi_access_log %>"
       base_url: "<%= @jsonapi_base_url %>"
       logger:
         level: <%= @jsonapi_log_level %>
@@ -195,7 +195,7 @@ production:
     oobetet:
       enabled: <%= @oobetet_enabled %>
       server: "<%= @oobetet_server %>"
-      port: <%= @oobetet_server %>
+      port: <%= @oobetet_port %>
       # jabberid, password, alias, rooms: see the jabber pikelet
       jabberid: "<%= @oobetet_jabber_id %>"
       password: "<%= @oobetet_jabber_password %>"
@@ -210,9 +210,9 @@ production:
       pagerduty_contact: "<%= @oobetet_pagerduty_contact %>"
       # Jabber rooms to join
       rooms:
-      <% @oobetet_rooms.each do |room| -%>
-      - "<%= room %>""
-      <% end -%> 
+<% @oobetet_jabber_rooms.each do |room| -%>
+        - "<%= room %>"
+<% end -%> 
       logger:
         level: <%= @oobetet_log_level %>
         syslog_errors: <%= @oobetet_syslog_errors %>
