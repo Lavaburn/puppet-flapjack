@@ -319,7 +319,7 @@ class flapjack (
   $oobetet_pagerduty_contact                   = 11111111111111111111111111111111,
   $oobetet_jabber_rooms                        = ['flapjacktest@conference.jabber.example.com', 'gimp@conference.jabber.example.com', 'log@conference.jabber.example.com'],
   $oobetet_log_level                           = INFO,
-  $jsonapi_oobetet_syslog_errors               = yes,
+  $oobetet_syslog_errors               = yes,
 
 ) {
 
