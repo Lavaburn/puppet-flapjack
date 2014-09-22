@@ -70,7 +70,7 @@
 #  Default: no
 # [*gateways_email_queue*]
 #  Default: email_notifications
-# [*gateways_email_loglevel*]
+# [*gateways_email_log_level*]
 #  Default: INFO
 # [*gateways_email_syslog_errors*]
 #  Default: yes
@@ -90,7 +90,7 @@
 #  Default: no
 # [*gateways_sms_queue*]
 #  Default: sms_notifications
-# [*gateways_sms_loglevel*]
+# [*gateways_sms_log_level*]
 #  Default: INFO
 # [*gateways_sms_syslog_errors*]
 #  Default: yes
@@ -140,7 +140,7 @@
 #  Default: - "@flapjack"
 # [*gateways_jabber_rooms*]
 #  Default: - "gimp@conference.jabber.example.com"
-# [*gateways_jabber_loglevel*]
+# [*gateways_jabber_log_level*]
 #  Default: INFO
 # [*gateways_jabber_syslog_errors*]
 #  Default: yes
@@ -148,7 +148,7 @@
 #  Default: no
 # [*gateways_pagerduty_queue*]
 #  Default: pagerduty_notifications
-# [*gateways_pagerduty_loglevel*]
+# [*gateways_pagerduty_log_level*]
 #  Default: INFO
 # [*gateways_pagerduty_syslog_errors*]
 #  Default: yes
@@ -166,7 +166,7 @@
 # Default: "http://localhost:3081/"
 # [*logo_image_path*]
 # Default: "/etc/flapjack/web/custom_logo/flapjack-2013-notext-transparent-300-300.png"
-# [*web_loglevel*]
+# [*web_log_level*]
 #  Default: INFO
 # [*web_syslog_errors*]
 #  Default: yes
@@ -180,7 +180,7 @@
 #  Default: "/var/log/flapjack/jsonapi_access.log"
 # [*jsonapi_base_url*]
 #  Default: "http://localhost:3081/"
-# [*jsonapi_loglevel*]
+# [*jsonapi_log_level*]
 #  Default: INFO
 # [*jsonapi_syslog_errors*]
 #  Default: yes
@@ -206,7 +206,7 @@
 # Default: "11111111111111111111111111111111"
 # [*oobetet_jabber_rooms*]
 # Default: "flapjacktest@conference.jabber.example.com"
-# [*oobetet_loglevel*]
+# [*oobetet_log_level*]
 #  Default: INFO
 # [*jsonapi_oobetet_errors*]
 #  Default: yes
@@ -244,30 +244,30 @@ class flapjack (
   $default_contact_timezone                    = UTC,
   $notifier_log_level                          = INFO,
   $notifier_syslog_errors                      = yes,
-  $nagios_receiver_enabled                     = true,
+#  $nagios_receiver_enabled                     = true,
   $nagios_receiver_fifo                        = '/var/cache/nagios3/event_stream.fifo',
-  $ncsa_receiver_enabled                       = true,
+#  $ncsa_receiver_enabled                       = true,
   $ncsa_receiver_fifo                          = '/var/lib/nagios3/rw/nagios.cmd',
   $gateways_email_enabled                      = no,
   $gateways_email_queue                        = email_notifications,
-  $gateways_email_loglevel                     = INFO,
+  $gateways_email_log_level                     = INFO,
   $gateways_email_syslog_errors                = yes,
   $gateways_email_smtp_host                    = '127.0.0.1',
   $gateways_email_smtp_port                    = 1025,
   $gateways_email_smtp_starttls                = false,
-  $gateways_email_smtp_auth                    = false,
-  $gateways_email_smtp_auth_username           = undef,
-  $gateways_email_smtp_auth_password           = undef,
+#  $gateways_email_smtp_auth                    = false,
+#  $gateways_email_smtp_auth_username           = undef,
+#  $gateways_email_smtp_auth_password           = undef,
   $gateways_sms_enabled                        = no,
   $gateways_sms_queue                          = sms_notifications,
-  $gateways_sms_loglevel                       = INFO,
+  $gateways_sms_log_level                      = INFO,
   $gateways_sms_syslog_errors                  = yes,
   $gateways_sms_endpoint                       = 'https://www.messagenet.com.au/dotnet/Lodge.asmx/LodgeSMSMessage',
   $gateways_sms_endpoint_username              = username,
   $gateways_sms_endpoint_password              = password,
   $gateways_sms_twilio_enabled                 = no,
   $gateways_sms_twilio_queue                   = sms_twilio_notifications,
-  $gateways_sms_twilio_loglev                  = INFO,
+  $gateways_sms_twilio_log_level               = INFO,
   $gateways_sms_twilio_syslog_errors           = yes,
   $gateways_sms_twilio_account_sid             = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,
   $gateways_sms_twilio_auth_toke               = yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy,
@@ -285,11 +285,11 @@ class flapjack (
   $gateways_jabber_alias                       = 'flapjack',
   $gateways_jabber_identifiers                 = [ '@flapjack' ],
   $gateways_jabber_rooms                       = [ 'gimp@conference.jabber.example.com' ],
-  $gateways_jabber_loglevel                    = INFO,
+  $gateways_jabber_log_level                   = INFO,
   $gateways_jabber_syslog_errors               = yes,
   $gateways_pagerduty_enabled                  = no,
   $gateways_pagerduty_queue                    = pagerduty_notifications,
-  $gateways_pagerduty_loglevel                 = INFO,
+  $gateways_pagerduty_log_level                = INFO,
   $gateways_pagerduty_syslog_errors            = yes,
   $web_enabled                                 = yes,
   $web_port                                    = 3080,
@@ -297,15 +297,15 @@ class flapjack (
   $web_auto_refresh                            = 120,
   $web_access_log                              = 'web_access.log',
   $web_api_url                                 = 'http://localhost:3081/',
-  $logo_image_path                             = '/etc/flapjack/web/custom_logo/flapjack-2013-notext-transparent-300-300.png',
-  $web_loglevel                                = INFO,
+#  $logo_image_path                             = '/etc/flapjack/web/custom_logo/flapjack-2013-notext-transparent-300-300.png',
+  $web_log_level                                = INFO,
   $web_syslog_errors                           = yes,
   $jsonapi_enabled                             = yes,
   $jsonapi_port                                = 3081,
   $jsonapi_timeout                             = 300,
   $jsonapi_access_log                          = 'jsonapi_access.log',
   $jsonapi_base_url                            = 'http://localhost:3081/',
-  $jsonapi_loglevel                            = INFO,
+  $jsonapi_log_level                            = INFO,
   $jsonapi_syslog_errors                       = yes,
   $oobetet_enabled                             = no,
   $oobetet_server                              = 'jabber.example.com',
@@ -318,7 +318,7 @@ class flapjack (
   $oobetet_max_latency                         = 300,
   $oobetet_pagerduty_contact                   = 11111111111111111111111111111111,
   $oobetet_jabber_rooms                        = 'flapjacktest@conference.jabber.example.com',
-  $oobetet_loglevel                            = INFO,
+  $oobetet_log_level                            = INFO,
   $jsonapi_oobetet_errors                      = yes,
 
 ) {
