@@ -1,7 +1,7 @@
 class flapjack::config {
   file { '/var/run/flapjack':
     ensure  => directory,
-    mode    => '0777',
+    mode    => '0755',
     require => [ Package['flapjack'] ],
   }
 
