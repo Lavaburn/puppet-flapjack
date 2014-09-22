@@ -10,7 +10,7 @@ This module installs and configures flapjack.
 
 ```puppet
 class { 'flapjack':
-  redis_host     => $haproxy_vip,
+  redis_host     => '127.0.0.1',
   embedded_redis => false,
 }
 ```
