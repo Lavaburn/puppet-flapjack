@@ -255,6 +255,8 @@ class flapjack (
   $gateways_email_smtp_host                    = '127.0.0.1',
   $gateways_email_smtp_port                    = 1025,
   $gateways_email_smtp_starttls                = false,
+  $gateways_email_smtp_domain                  = localhost,
+  $gateways_email_smtp_from                    = 'flapjack@localdomain.com',
 #  $gateways_email_smtp_auth                    = false,
 #  $gateways_email_smtp_auth_username           = undef,
 #  $gateways_email_smtp_auth_password           = undef,
