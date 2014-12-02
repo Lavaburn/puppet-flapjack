@@ -5,7 +5,7 @@ case $::osfamily {
    'redhat': {
      yumrepo { "flapjack-v1" :
        descr => "Flapjack, an alert router",
-       baseurl => "http://packages.flapjack.io/rpm/v1/flapjack/centos/${operatingsystemmajrelease}/${arch}",
+       baseurl => "http://packages.flapjack.io/rpm/v1/flapjack/centos/${operatingsystemmajrelease}/${architecture}",
        enabled => 1,
        gpgcheck => 0,
        gpgkey => absent,
