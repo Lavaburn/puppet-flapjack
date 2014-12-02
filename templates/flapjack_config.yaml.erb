@@ -76,6 +76,8 @@ production:
         # 1025 is the default port for http://mailcatcher.me
         port: <%= @gateways_email_smtp_port %>
         starttls: <%= @gateways_email_smtp_starttls %>
+        domain: '<%= @gateways_email_smtp_domain %>'
+        from: '<%= @gateways_email_smtp_from %>'
         #auth:
         #  type:
         #  username:

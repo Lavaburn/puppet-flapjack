@@ -16,13 +16,13 @@ service { 'flapjack':
 
 if $flapjack::embedded_redis {
   service { 'redis-flapjack':
-    ensure     => stopped,
-    enable     => false,
+    ensure     => running,
+    enable     => true,
   }
 } else {
   service { 'redis-flapjack':
-    ensure     => running,
-    enable     => true,
+    ensure     => stopped,
+    enable     => false,
   }
 }
 
