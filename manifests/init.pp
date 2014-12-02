@@ -323,7 +323,7 @@ class flapjack (
 
 ) {
 
-  class{'flapjack::apt': } ->
+  class{'flapjack::repo': } ->
   class{'flapjack::install': } ->
   class{'flapjack::config': } ~>
   class{'flapjack::service': } ->
