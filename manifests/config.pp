@@ -24,15 +24,6 @@ class flapjack::config {
   #  source  => 'puppet:///modules/flapjack/etc/init.d/flapjack-web-api',
   #}
 
-  file { '/etc/init.d/redis-flapjack':
-    mode    => '0744',
-    source  => 'puppet:///modules/flapjack/redis-flapjack.init',
-  }
-
-  file { '/opt/flapjack/embedded/etc/redis/redis-flapjack.conf':
-    source  => 'puppet:///modules/flapjack/redis-flapjack.conf',
-  }
-
   # install and configure logrotate
   if ! defined(Package['logrotate']) {
     ensure_packages['logrotate']
@@ -46,5 +37,20 @@ class flapjack::config {
       File["/etc/flapjack"],
     ]
   }  
+
+case $::osfamily {
+   'redhat': {
+     
+     file { '/etc/init.d/redis-flapjack':
+       mode    => '0744',
+       source  => 'puppet:///modules/flapjack/redis-flapjack.init',
+     }
+
+     file { '/opt/flapjack/embedded/etc/redis/redis-flapjack.conf':
+       source  => 'puppet:///modules/flapjack/redis-flapjack.conf',
+     }
+
+   }
+
 
 }
