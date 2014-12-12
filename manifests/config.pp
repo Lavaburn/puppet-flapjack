@@ -25,6 +25,7 @@ class flapjack::config {
   #}
 
   file { '/etc/init.d/redis-flapjack':
+    mode    => '0744',
     source  => 'puppet:///modules/flapjack/redis-flapjack.init',
   }
 
