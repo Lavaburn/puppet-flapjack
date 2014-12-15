@@ -16,7 +16,7 @@ case $::osfamily {
    'debian': {
      apt::source { 'flapjack':
        location    => 'http://packages.flapjack.io/deb/v1',
-       repos       => 'main',
+       repos       => 'experimental',
        key         => '803709B6',
        include_src => false,
      }
