@@ -18,7 +18,7 @@ case $::osfamily {
        location    => 'http://packages.flapjack.io/deb/v1',
        repos       => 'experimental',
        key         => '803709B6',
-       include_src => false,
+       #No longer supported? - include_src => false,
      }
    }
 }
