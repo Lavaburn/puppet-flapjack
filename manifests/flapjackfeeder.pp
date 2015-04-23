@@ -1,6 +1,5 @@
 # puts flapjackfeeder into place
 class flapjack::flapjackfeeder {
-
   # flapjackfeeder
   file { '/usr/local/lib':
     ensure  => directory,
@@ -16,5 +15,4 @@ class flapjack::flapjackfeeder {
     group   => root,
     mode    => '0644',
   }
-
 }

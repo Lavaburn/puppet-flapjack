@@ -16,6 +16,7 @@ class flapjack::config {
     require => [ Package['flapjack'] ],
   }
 
+  # TEMPLATE Config here!
   file { '/etc/flapjack/flapjack_config.yaml':
     content  => template('flapjack/flapjack_config.yaml.erb'),
   }
@@ -36,21 +37,20 @@ class flapjack::config {
       Package['logrotate'],
       File["/etc/flapjack"],
     ]
-  }  
+  }
 
-case $::osfamily {
-   'redhat': {
-     
-     file { '/etc/init.d/redis-flapjack':
-       mode    => '0744',
-       source  => 'puppet:///modules/flapjack/redis-flapjack.init',
-     }
-
-     file { '/opt/flapjack/embedded/etc/redis/redis-flapjack.conf':
-       source  => 'puppet:///modules/flapjack/redis-flapjack.conf',
-     }
-
-   }
-}
-
+  if ($embedded_redis) {
+    case $::osfamily {
+      'redhat': {
+		    file { '/etc/init.d/redis-flapjack':
+		      mode   => '0744',
+		      source => 'puppet:///modules/flapjack/redis-flapjack.init',
+		    }
+		    file { '/opt/flapjack/embedded/etc/redis/redis-flapjack.conf':
+		      source  => 'puppet:///modules/flapjack/redis-flapjack.conf',
+		    }
+      }
+      default: {}
+    }
+  }
 }
