@@ -329,7 +329,7 @@ class flapjack (
   $web_timeout       = 300,
   $web_auto_refresh  = 120,
   $web_access_log    = 'web_access.log',
-  $web_api_url       = "http://localhost:${jsonapi_port}/",
+  $web_api_url       = "http://localhost:3081/",
 
   $web_log_level     = INFO,
   $web_syslog_errors = yes,
@@ -339,7 +339,7 @@ class flapjack (
   $jsonapi_port          = 3081,
   $jsonapi_timeout       = 300,
   $jsonapi_access_log    = 'jsonapi_access.log',
-  $jsonapi_base_url      = "http://localhost:${jsonapi_port}/",
+  $jsonapi_base_url      = "http://localhost:3081/",
 
   $jsonapi_log_level     = INFO,
   $jsonapi_syslog_errors = yes,
