@@ -26,15 +26,16 @@ class flapjack::config {
   #}
 
   # install and configure logrotate
-  if ! defined(Package['logrotate']) {
-    ensure_packages['logrotate']
-  }
+#  if ! defined(Package['logrotate']) {
+#    ensure_packages['logrotate']
+#  }
+  include logrotate::base   # rodjek/logrotate
 
   file { "/etc/logrotate.d/flapjack":
     ensure  => file,
     content => template('flapjack/flapjack_logrotate.conf.erb'),
     require => [
-      Package['logrotate'],
+      Class['logrotate::base'],
       File["/etc/flapjack"],
     ]
   }

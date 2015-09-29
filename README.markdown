@@ -6,6 +6,10 @@ puppet-flapjack
 This module installs and configures flapjack.
 
 
+##Dependencies
+
+* Rodjek/logrotate
+
 ##Setup
 
 ```puppet
