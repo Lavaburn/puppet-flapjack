@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), '..', 'flapjack_rest')
 
-Puppet::Type.type(:flapjack_media).provide :rest, :parent => Puppet::Provider::Rest do
+Puppet::Type.type(:flapjack_media).provide :rest, :parent => Puppet::Provider::FlapjackRest do
   desc "REST provider for Flapjack Media"
   
   mk_resource_methods

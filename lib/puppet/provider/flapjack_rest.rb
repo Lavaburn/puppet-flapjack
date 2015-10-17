@@ -6,7 +6,7 @@ rescue LoadError => e
   Puppet.info "Flapjack Puppet module requires 'rest-client' and 'json' ruby gems."
 end
 
-class Puppet::Provider::Rest < Puppet::Provider
+class Puppet::Provider::FlapjackRest < Puppet::Provider
   desc "Flapjack API REST calls"
   
   confine :feature => :json
