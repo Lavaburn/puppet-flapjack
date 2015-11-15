@@ -69,14 +69,14 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
       end
 
       {
-        :name       => object["id"],   
-        :first_name => object["first_name"],  
-        :last_name  => object["last_name"],  
-        :email      => object["email"],  
-        :timezone   => object["timezone"],  
-        #:contact_tags       => tags,  
-        :entities   => entities,
-        :ensure     => :present
+        :name            => object["id"],   
+        :first_name      => object["first_name"],  
+        :last_name       => object["last_name"],  
+        :email           => object["email"],  
+        :timezone        => object["timezone"],  
+        #:contact_tags    => tags,  
+        :linked_entities => entities,
+        :ensure          => :present
       }
     end
   end
@@ -159,11 +159,11 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
       operations.push op
     end
     
-    if resource[:entities] != current["entities"]
+    if resource[:linked_entities] != current["linked_entities"]
       op = {
         :op    => 'replace',
         :path  => '/contacts/0/links/entities',
-        :value => resource[:entities],
+        :value => resource[:linked_entities],
       }
       operations.push op
     end
