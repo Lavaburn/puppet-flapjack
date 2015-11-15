@@ -126,7 +126,8 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
       
     current = self.class.getContact(resource[:name])
 
-    operations = Array.new
+    operations = Array.new    
+    patch_contact = false
       
     if resource[:first_name] != current[:first_name]
       op = {
@@ -135,6 +136,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
         :value => resource[:first_name],
       }
       operations.push op
+      patch_contact = true
     end
       
     if resource[:last_name] != current[:last_name]
@@ -144,6 +146,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
         :value => resource[:last_name],
       }
       operations.push op
+      patch_contact = true
     end
     
     if resource[:email] != current[:email]
@@ -153,6 +156,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
         :value => resource[:email],
       }
       operations.push op
+      patch_contact = true
     end
     
     if resource[:timezone] != current[:timezone]
@@ -162,6 +166,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
         :value => resource[:timezone],
       }
       operations.push op
+      patch_contact = true
     end
     
     if resource[:linked_entities] != current[:linked_entities]
@@ -175,6 +180,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
           :value => entity,
         }
         operations.push op
+        patch_contact = true
       end
 
       remove.each do |entity|
@@ -184,11 +190,14 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
           :value => entity,
         }
         operations.push op
+        patch_contact = true
       end
     end
     
-    Puppet.debug "PATCH contacts/#{resource[:name]} PARAMS = "+operations.inspect
-    response = self.class.http_patch("contacts/#{resource[:name]}", operations)
+    if patch_contact
+      Puppet.debug "PATCH contacts/#{resource[:name]} PARAMS = "+operations.inspect
+      response = self.class.http_patch("contacts/#{resource[:name]}", operations)
+    end
     
     if resource[:default_rule_blackholes] != current[:default_rule_blackholes]
       ruleId = self.class.findDefaultNotificationRule(resource[:name])
@@ -216,7 +225,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
       }
       operations.push op
       
-      #Puppet.debug "PATCH notification_rules/#{ruleId} PARAMS = "+operations.inspect
+      Puppet.debug "PATCH notification_rules/#{ruleId} PARAMS = "+operations.inspect
       response = self.class.http_patch("notification_rules/#{ruleId}", operations)
     end
   end
