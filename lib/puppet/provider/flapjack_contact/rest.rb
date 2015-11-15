@@ -237,9 +237,9 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
         #Puppet.debug "Contact FOUND. ID = "+contact["id"].to_s
         rules = contact["links"]["notification_rules"]        
         rules.each do |rule|
-          Puppet.debug "Rule FOUND: #{rule}"
-          if (!rule.start_with?(contact["name"]))  # Enforced by the Puppet implementation
-            Puppet.debug "Rule does not start with: #{contact["name"]}"
+          #Puppet.debug "Rule FOUND: #{rule}"
+          if (!rule.start_with?(contact["id"]))  # Enforced by the Puppet implementation
+            #Puppet.debug "Rule does not start with: #{contact["id"]}"
             return rule
           end
         end
