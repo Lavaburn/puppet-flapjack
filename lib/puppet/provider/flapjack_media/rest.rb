@@ -6,7 +6,7 @@ Puppet::Type.type(:flapjack_media).provide :rest, :parent => Puppet::Provider::F
   mk_resource_methods
 
   def flush      
-    Puppet.debug "Flapjack Media - Flush Started"
+    #Puppet.debug "Flapjack Media - Flush Started"
       
     if @property_flush[:ensure] == :absent
       deleteMedia

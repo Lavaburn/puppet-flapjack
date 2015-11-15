@@ -6,7 +6,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
   mk_resource_methods
 
   def flush      
-    Puppet.debug "Flapjack Contact - Flush Started"
+    #Puppet.debug "Flapjack Contact - Flush Started"
       
     if @property_flush[:ensure] == :absent
       deleteContact
@@ -49,7 +49,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
             
         map = getContactObj(contact)
         if map != nil
-          Puppet.debug "Contact Object: "+map.inspect
+          #Puppet.debug "Contact Object: "+map.inspect
           return map
         end  
        end

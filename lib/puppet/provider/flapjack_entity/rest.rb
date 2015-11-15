@@ -6,7 +6,7 @@ Puppet::Type.type(:flapjack_entity).provide :rest, :parent => Puppet::Provider::
   mk_resource_methods
 
   def flush
-    Puppet.debug "Flapjack Entity - Flush Started"
+    #Puppet.debug "Flapjack Entity - Flush Started"
       
     if @property_flush[:ensure] == :absent
       deleteEntity

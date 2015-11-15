@@ -243,7 +243,7 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       operations.push op
     end
     
-    #Puppet.debug "PATCH notification_rules/#{resource[:name]} PARAMS = "+operations.inspect
+    Puppet.debug "PATCH notification_rules/#{resource[:name]} PARAMS = "+operations.inspect
     response = self.class.http_patch("notification_rules/#{resource[:name]}", operations)
   end
 end
