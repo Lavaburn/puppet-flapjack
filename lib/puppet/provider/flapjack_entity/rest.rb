@@ -58,15 +58,16 @@ Puppet::Type.type(:flapjack_entity).provide :rest, :parent => Puppet::Provider::
   
   def self.getEntityObj(object)   
     if object["id"] != nil   
-      tags = Array.new
-      object["tags"].each do |tag|
-        tags.push(tag)
-      end      
+# TODO - tags are not currently used - they are links and not direct parameters !!
+#      tags = Array.new
+#      object["tags"].each do |tag|
+#        tags.push(tag)
+#      end      
           
       {
         :id          => object["id"],   
         :name        => object["name"], 
-        :entity_tags => tags,  
+#        :entity_tags => tags,  
         :ensure      => :present
       }
     end
@@ -80,7 +81,7 @@ Puppet::Type.type(:flapjack_entity).provide :rest, :parent => Puppet::Provider::
     entity = {         
       :id   => resource[:id],
       :name => resource[:name],
-      :tags => resource[:entity_tags],
+#      :tags => resource[:entity_tags],
     }
             
     entities = Array.new
@@ -117,15 +118,15 @@ Puppet::Type.type(:flapjack_entity).provide :rest, :parent => Puppet::Provider::
       operations.push op
     end
     
-    if resource[:tags] != current["tags"]
-      op = {
-        :op    => 'replace',
-        :path  => '/entities/0/tags',
-        :value => resource[:tags],
-      }
-      operations.push op
-    end
-    # TODO tags update (add/remove) => /entities/0/links/tags/database ???
+#    if resource[:tags] != current["tags"]
+#      op = {
+#        :op    => 'replace',
+#        :path  => '/entities/0/tags',
+#        :value => resource[:tags],
+#      }
+#      operations.push op
+#    end
+    # => Tags update (add/remove) => /entities/0/links/tags/database ???
     
     #Puppet.debug "PATCH entities/#{resource[:id]} PARAMS = "+operations.inspect
     response = self.class.http_patch("entities/#{resource[:id]}", operations)

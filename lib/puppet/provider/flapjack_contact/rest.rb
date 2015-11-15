@@ -58,6 +58,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
 
   def self.getContactObj(object)   
     if object["id"] != nil   
+# TODO - tags are not currently used - they are links and not direct parameters !!
 #      tags = Array.new
 #      object["tags"].each do |tag|
 #       tags.push(tag)
@@ -168,7 +169,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
       operations.push op
     end
     
-    #Puppet.debug "PATCH contacts/#{resource[:name]} PARAMS = "+operations.inspect
+    Puppet.debug "PATCH contacts/#{resource[:name]} PARAMS = "+operations.inspect
     response = self.class.http_patch("contacts/#{resource[:name]}", operations)
   end
 end
