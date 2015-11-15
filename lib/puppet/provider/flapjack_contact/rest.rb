@@ -59,17 +59,23 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
   def self.getContactObj(object)   
     if object["id"] != nil   
 #      tags = Array.new
-#      object["alerts"].each do |alert|
-#       
-#      end      
-#          
+#      object["tags"].each do |tag|
+#       tags.push(tag)
+#      end     
+
+      entities = Array.new
+      object["links"]["entities"].each do |entity|
+        entities.push(entity)
+      end
+
       {
         :name       => object["id"],   
         :first_name => object["first_name"],  
         :last_name  => object["last_name"],  
         :email      => object["email"],  
         :timezone   => object["timezone"],  
-        #:contact_tags       => object["tags"],  
+        #:contact_tags       => tags,  
+        :entities   => entities,
         :ensure     => :present
       }
     end
@@ -98,6 +104,9 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
     
     #Puppet.debug "POST contacts PARAMS = "+params.inspect
     response = self.class.http_post('contacts', params)
+    
+    # Immediately update to link to an entity
+    updateContact
   end
 
   def deleteContact
@@ -146,6 +155,15 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
         :op    => 'replace',
         :path  => '/contacts/0/timezone',
         :value => resource[:timezone],
+      }
+      operations.push op
+    end
+    
+    if resource[:entities] != current["entities"]
+      op = {
+        :op    => 'replace',
+        :path  => '/contacts/0/links/entities',
+        :value => resource[:entities],
       }
       operations.push op
     end

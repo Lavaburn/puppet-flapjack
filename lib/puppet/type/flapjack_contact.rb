@@ -28,4 +28,8 @@ Puppet::Type.newtype(:flapjack_contact) do
 #  newproperty(:contact_tags, :array_matching => :all) do
 #    desc "Contact Tags"
 #  end
+  
+  newproperty(:linked_entities, :array_matching => :all) do
+    desc "Linked Entities"
+  end  
 end
