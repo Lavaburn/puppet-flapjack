@@ -80,9 +80,9 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
           :unknown_media      => object["unknown_media"],
           :warning_media      => object["warning_media"],
           :critical_media     => object["critical_media"],
-          :unknown_blackhole  => object["unknown_blackhole"],
-          :warning_blackhole  => object["warning_blackhole"],
-          :critical_blackhole => object["critical_blackhole"],
+          :unknown_blackhole  => (object["unknown_blackhole"] == 'true'),
+          :warning_blackhole  => (object["warning_blackhole"] == 'true'),
+          :critical_blackhole => (object["critical_blackhole"] == 'true'),
           :ensure             => :present
         }
       end
