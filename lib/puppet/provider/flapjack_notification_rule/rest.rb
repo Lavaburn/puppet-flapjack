@@ -105,9 +105,9 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       :unknown_media      => resource[:unknown_media],
       :warning_media      => resource[:warning_media],
       :critical_media     => resource[:critical_media],
-      :unknown_blackhole  => resource[:unknown_blackhole],
-      :warning_blackhole  => resource[:warning_blackhole],
-      :critical_blackhole => resource[:critical_blackhole],
+      :unknown_blackhole  => (resource[:unknown_blackhole] == 'true'),
+      :warning_blackhole  => (resource[:warning_blackhole] == 'true'),
+      :critical_blackhole => (resource[:critical_blackhole] == 'true'),
     }
                 
     rules = Array.new
@@ -135,7 +135,7 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
 
     operations = Array.new
     
-#    if resource[:contact] != current["contact"]
+#    if resource[:contact] != current[:contact]
 #      op = {
 #        :op    => 'replace',
 #        :path  => '/contacts/0/contact',
@@ -144,7 +144,7 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
 #      operations.push op
 #    end
     
-    if resource[:entities] != current["entities"]
+    if resource[:entities] != current[:entities]
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/entities',
@@ -153,7 +153,7 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       operations.push op
     end
     
-    if resource[:regex_entities] != current["regex_entities"]
+    if resource[:regex_entities] != current[:regex_entities]
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/regex_entities',
@@ -162,7 +162,7 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       operations.push op
     end
 
-    if resource[:tags] != current["tags"]
+    if resource[:tags] != current[:tags]
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/tags',
@@ -171,7 +171,7 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       operations.push op
     end
     
-    if resource[:regex_tags] != current["regex_tags"]
+    if resource[:regex_tags] != current[:regex_tags]
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/regex_tags',
@@ -180,7 +180,7 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       operations.push op
     end
     
-    if resource[:time_restrictions] != current["time_restrictions"]
+    if resource[:time_restrictions] != current[:time_restrictions]
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/time_restrictions',
@@ -189,7 +189,7 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       operations.push op
     end
 
-    if resource[:unknown_media] != current["unknown_media"]
+    if resource[:unknown_media] != current[:unknown_media]
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/unknown_media',
@@ -198,7 +198,7 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       operations.push op
     end
 
-    if resource[:warning_media] != current["warning_media"]
+    if resource[:warning_media] != current[:warning_media]
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/warning_media',
@@ -207,7 +207,7 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       operations.push op
     end
 
-    if resource[:critical_media] != current["critical_media"]
+    if resource[:critical_media] != current[:critical_media]
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/critical_media',
@@ -216,29 +216,33 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       operations.push op
     end            
     
-    if resource[:unknown_blackhole] != current["unknown_blackhole"]
+    unknown_blackhole = (resource[:unknown_blackhole] == 'true')
+    warning_blackhole = (resource[:warning_blackhole] == 'true')
+    critical_blackhole = (resource[:critical_blackhole] == 'true')
+      
+    if unknown_blackhole != current[:unknown_blackhole]
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/unknown_blackhole',
-        :value => resource[:unknown_blackhole],
+        :value => unknown_blackhole,
       }
       operations.push op
     end          
     
-    if resource[:warning_blackhole] != current["warning_blackhole"]
+    if warning_blackhole != current[:warning_blackhole]
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/warning_blackhole',
-        :value => resource[:warning_blackhole],
+        :value => warning_blackhole,
       }
       operations.push op
     end          
     
-    if resource[:critical_blackhole] != current["critical_blackhole"]
+    if critical_blackhole != current[:critical_blackhole]
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/critical_blackhole',
-        :value => resource[:critical_blackhole],
+        :value => critical_blackhole,
       }
       operations.push op
     end
