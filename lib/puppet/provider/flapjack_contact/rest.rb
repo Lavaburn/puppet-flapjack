@@ -68,16 +68,20 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
       object["links"]["entities"].each do |entity|
         entities.push(entity)
       end
+      
+      ruleId = findDefaultNotificationRule(object["id"])
+      default_rule_blackholes = getBlackHoles(ruleId)
 
       {
-        :name            => object["id"],   
-        :first_name      => object["first_name"],  
-        :last_name       => object["last_name"],  
-        :email           => object["email"],  
-        :timezone        => object["timezone"],  
-        #:contact_tags    => tags,  
-        :linked_entities => entities,
-        :ensure          => :present
+        :name                    => object["id"],   
+        :first_name              => object["first_name"],  
+        :last_name               => object["last_name"],  
+        :email                   => object["email"],  
+        :timezone                => object["timezone"],  
+        #:contact_tags            => tags,  
+        :linked_entities         => entities,
+        :default_rule_blackholes => default_rule_blackholes,
+        :ensure                  => :present
       }
     end
   end
@@ -106,7 +110,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
     #Puppet.debug "POST contacts PARAMS = "+params.inspect
     response = self.class.http_post('contacts', params)
     
-    # Immediately update to link to an entity
+    # Immediately update to link to an entity and set blackholes on default notification rule
     updateContact
   end
 
@@ -185,5 +189,76 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
     
     Puppet.debug "PATCH contacts/#{resource[:name]} PARAMS = "+operations.inspect
     response = self.class.http_patch("contacts/#{resource[:name]}", operations)
+    
+    if resource[:default_rule_blackholes] != current[:default_rule_blackholes]
+      ruleId = self.class.findDefaultNotificationRule(resource[:name])
+      
+      operations = Array.new
+
+      op = {
+        :op    => 'replace',
+        :path  => '/notification_rules/0/critical_blackhole',
+        :value => (resource[:default_rule_blackholes].include?"critical"),
+      }
+      operations.push op
+
+      op = {
+        :op    => 'replace',
+        :path  => '/notification_rules/0/warning_blackhole',
+        :value => (resource[:default_rule_blackholes].include?"warning"),
+      }
+      operations.push op
+      
+      op = {
+        :op    => 'replace',
+        :path  => '/notification_rules/0/unknown_blackhole',
+        :value => (resource[:default_rule_blackholes].include?"unknown"),
+      }
+      operations.push op
+      
+      #Puppet.debug "PATCH notification_rules/#{ruleId} PARAMS = "+operations.inspect
+      response = self.class.http_patch("notification_rules/#{ruleId}", operations)
+    end
+  end
+  
+  def self.findDefaultNotificationRule(contact_id)   
+    contacts = get_objects("contacts/#{contact_id}", 'contacts')
+    if contacts != nil
+      contacts.each do |contact|
+        #Puppet.debug "Contact FOUND. ID = "+contact["id"].to_s
+        rules = contact["links"]["notification_rules"]        
+        rules.each do |rule|
+          if (!rule.start_with?(contact["name"]))  # Enforced by the Puppet implementation
+            return rule
+          end
+        end
+      end
+    end
+    
+    return "" # TODO FAILURE ?
+  end
+  
+  def self.getBlackHoles(ruleId)   
+    result = Array.new
+    
+    rules = get_objects("notification_rules/#{ruleId}", 'notification_rules')
+    if rules != nil
+      rules.each do |rule|
+        #Puppet.debug "Notification Rule FOUND. ID = "+rule["id"].to_s
+
+        if object["critical_blackhole"] 
+          result.push "critical"
+        end
+        if object["warning_blackhole"] 
+          result.push "warning"
+        end
+        if object["unknown_blackhole"] 
+          result.push "unknown"
+        end
+         
+      end
+    end
+    
+    return result      
   end
 end
