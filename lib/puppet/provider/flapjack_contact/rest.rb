@@ -195,7 +195,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
     end
     
     if patch_contact
-      Puppet.debug "PATCH contacts/#{resource[:name]} PARAMS = "+operations.inspect
+      #Puppet.debug "PATCH contacts/#{resource[:name]} PARAMS = "+operations.inspect
       response = self.class.http_patch("contacts/#{resource[:name]}", operations)
     end
     
@@ -225,7 +225,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
       }
       operations.push op
       
-      Puppet.debug "PATCH notification_rules/#{ruleId} PARAMS = "+operations.inspect
+      #Puppet.debug "PATCH notification_rules/#{ruleId} PARAMS = "+operations.inspect
       response = self.class.http_patch("notification_rules/#{ruleId}", operations)
     end
   end
@@ -237,7 +237,9 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
         #Puppet.debug "Contact FOUND. ID = "+contact["id"].to_s
         rules = contact["links"]["notification_rules"]        
         rules.each do |rule|
+          Puppet.debug "Rule FOUND: #{rule}"
           if (!rule.start_with?(contact["name"]))  # Enforced by the Puppet implementation
+            Puppet.debug "Rule does not start with: #{contact["name"]}"
             return rule
           end
         end
