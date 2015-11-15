@@ -120,13 +120,13 @@ Puppet::Type.type(:flapjack_entity).provide :rest, :parent => Puppet::Provider::
     
 #    if resource[:tags] != current["tags"]
 #      op = {
-#        :op    => 'replace',
+#        :op    => 'replace',   # one of replace (for attributes), add or remove (for linked objects)
 #        :path  => '/entities/0/tags',
 #        :value => resource[:tags],
 #      }
 #      operations.push op
 #    end
-    # => Tags update (add/remove) => /entities/0/links/tags/database ???
+    # => Tags update (add/remove) => /entities/0/links/tags/database ???    
     
     #Puppet.debug "PATCH entities/#{resource[:id]} PARAMS = "+operations.inspect
     response = self.class.http_patch("entities/#{resource[:id]}", operations)

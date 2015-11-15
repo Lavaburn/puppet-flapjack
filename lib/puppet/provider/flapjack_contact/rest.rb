@@ -49,7 +49,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
             
         map = getContactObj(contact)
         if map != nil
-          #Puppet.debug "Contact Object: "+map.inspect
+          Puppet.debug "Contact Object: "+map.inspect
           return map
         end  
        end
@@ -124,7 +124,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
 
     operations = Array.new
       
-    if resource[:first_name] != current["first_name"]
+    if resource[:first_name] != current[:first_name]
       op = {
         :op    => 'replace',
         :path  => '/contacts/0/first_name',
@@ -133,7 +133,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
       operations.push op
     end
       
-    if resource[:last_name] != current["last_name"]
+    if resource[:last_name] != current[:last_name]
       op = {
         :op    => 'replace',
         :path  => '/contacts/0/last_name',
@@ -142,7 +142,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
       operations.push op
     end
     
-    if resource[:email] != current["email"]
+    if resource[:email] != current[:email]
       op = {
         :op    => 'replace',
         :path  => '/contacts/0/email',
@@ -151,7 +151,7 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
       operations.push op
     end
     
-    if resource[:timezone] != current["timezone"]
+    if resource[:timezone] != current[:timezone]
       op = {
         :op    => 'replace',
         :path  => '/contacts/0/timezone',
@@ -160,13 +160,27 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
       operations.push op
     end
     
-    if resource[:linked_entities] != current["linked_entities"]
-      op = {
-        :op    => 'replace',
-        :path  => '/contacts/0/links/entities',
-        :value => resource[:linked_entities],
-      }
-      operations.push op
+    if resource[:linked_entities] != current[:linked_entities]
+      add = resource[:linked_entities] - current[:linked_entities]
+      remove = current[:linked_entities] - resource[:linked_entities]
+      
+      add.each do |entity|
+        op = {
+          :op    => 'add',
+          :path  => '/contacts/0/links/entities',
+          :value => entity,
+        }
+        operations.push op
+      end
+
+      remove.each do |entity|
+        op = {
+          :op    => 'remove',
+          :path  => '/contacts/0/links/entities',
+          :value => entity,
+        }
+        operations.push op
+      end
     end
     
     Puppet.debug "PATCH contacts/#{resource[:name]} PARAMS = "+operations.inspect
