@@ -105,7 +105,7 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       :unknown_media      => resource[:unknown_media],
       :warning_media      => resource[:warning_media],
       :critical_media     => resource[:critical_media],
-      :unknown_blackhole  => (resource[:unknown_blackhole] == 'true'),
+      :unknown_blackhole  => (resource[:unknown_blackhole] == 'true'),    # TODO there is a bug here!! Keeps thinking params are not the same (DEBUG str vs bool?)
       :warning_blackhole  => (resource[:warning_blackhole] == 'true'),
       :critical_blackhole => (resource[:critical_blackhole] == 'true'),
     }
@@ -216,6 +216,7 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       operations.push op
     end            
     
+    # TODO there is a bug here  ?? Keeps thinking params are not the same (DEBUG str vs bool?)
     unknown_blackhole = (resource[:unknown_blackhole] == 'true')
     warning_blackhole = (resource[:warning_blackhole] == 'true')
     critical_blackhole = (resource[:critical_blackhole] == 'true')
