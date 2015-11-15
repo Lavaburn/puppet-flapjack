@@ -246,13 +246,13 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
       rules.each do |rule|
         #Puppet.debug "Notification Rule FOUND. ID = "+rule["id"].to_s
 
-        if object["critical_blackhole"] 
+        if rule["critical_blackhole"] 
           result.push "critical"
         end
-        if object["warning_blackhole"] 
+        if rule["warning_blackhole"] 
           result.push "warning"
         end
-        if object["unknown_blackhole"] 
+        if rule["unknown_blackhole"] 
           result.push "unknown"
         end
          
