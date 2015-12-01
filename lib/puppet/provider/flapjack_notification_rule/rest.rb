@@ -106,9 +106,9 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       :warning_media      => resource[:warning_media],
       :critical_media     => resource[:critical_media],
       # Puppet seems to make this a String?
-      :unknown_blackhole  => (resource[:unknown_blackhole] == 'true'),
-      :warning_blackhole  => (resource[:warning_blackhole] == 'true'),
-      :critical_blackhole => (resource[:critical_blackhole] == 'true'),
+      :unknown_blackhole  => resource[:unknown_blackhole],
+      :warning_blackhole  => resource[:warning_blackhole],
+      :critical_blackhole => resource[:critical_blackhole],   # == :true
     }
                 
     rules = Array.new
@@ -119,9 +119,10 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
     }
     
     Puppet.debug "Unknown blackhole = "+resource[:unknown_blackhole].inspect
-    Puppet.debug "Unknown blackhole is String? "+resource[:unknown_blackhole].is_a?(String).inspect
-    Puppet.debug "Unknown blackhole is Boolean? "+resource[:unknown_blackhole].is_a?(Boolean).inspect
-    
+    Puppet.debug "Unknown blackhole == 'false' => "+(resource[:unknown_blackhole]  == 'false').inspect
+    Puppet.debug "Unknown blackhole == :false => "+(resource[:unknown_blackhole]  == :false).inspect
+    Puppet.debug "Unknown blackhole == false => "+(resource[:unknown_blackhole]  == false).inspect
+      
     Puppet.debug "POST notification_rules PARAMS = "+params.inspect
     response = self.class.http_post("contacts/#{resource[:contact]}/notification_rules", params)
   end
