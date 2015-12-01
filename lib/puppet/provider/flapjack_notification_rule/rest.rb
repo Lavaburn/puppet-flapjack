@@ -117,7 +117,11 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       :notification_rules   => rules,
     }
     
-    #Puppet.debug "POST notification_rules PARAMS = "+params.inspect
+    Puppet.debug "Unknown blackhole = "+resource[:unknown_blackhole].inspect
+    Puppet.debug "Unknown blackhole is String? "+resource[:unknown_blackhole].is_a?(String)
+    Puppet.debug "Unknown blackhole is Boolean? "+resource[:unknown_blackhole].is_a?(Boolean)
+    
+    Puppet.debug "POST notification_rules PARAMS = "+params.inspect
     response = self.class.http_post("contacts/#{resource[:contact]}/notification_rules", params)
   end
 
