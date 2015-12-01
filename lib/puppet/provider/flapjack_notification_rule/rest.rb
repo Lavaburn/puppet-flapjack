@@ -67,6 +67,23 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       else  
         contacts = Array.new    
       end
+      
+      # Puppet makes the blackhole boolean a Symbol. Flapjack REST considers it a Boolean.
+      if (object["unknown_blackhole"])
+        unknown_blackhole = :true
+      else
+        unknown_blackhole = :false
+      end
+      if (object["warning_blackhole"])
+        warning_blackhole = :true
+      else
+        warning_blackhole = :false
+      end
+      if (object["critical_blackhole"])
+        critical_blackhole = :true
+      else
+        critical_blackhole = :false
+      end
             
       contacts.collect do |contact|
         {
@@ -80,9 +97,9 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
           :unknown_media      => object["unknown_media"],
           :warning_media      => object["warning_media"],
           :critical_media     => object["critical_media"],
-          :unknown_blackhole  => object["unknown_blackhole"],
-          :warning_blackhole  => object["warning_blackhole"],
-          :critical_blackhole => object["critical_blackhole"],
+          :unknown_blackhole  => unknown_blackhole,
+          :warning_blackhole  => warning_blackhole,
+          :critical_blackhole => critical_blackhole,
           :ensure             => :present
         }
       end
@@ -105,10 +122,10 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       :unknown_media      => resource[:unknown_media],
       :warning_media      => resource[:warning_media],
       :critical_media     => resource[:critical_media],
-      # Puppet seems to make this a String?
-      :unknown_blackhole  => resource[:unknown_blackhole],
-      :warning_blackhole  => resource[:warning_blackhole],
-      :critical_blackhole => resource[:critical_blackhole],   # == :true
+      # Puppet makes the boolean a Symbol !
+      :unknown_blackhole  => (resource[:unknown_blackhole] == :true),
+      :warning_blackhole  => (resource[:warning_blackhole] == :true),
+      :critical_blackhole => (resource[:critical_blackhole] == :true), 
     }
                 
     rules = Array.new
@@ -117,11 +134,6 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
     params = {
       :notification_rules   => rules,
     }
-    
-    Puppet.debug "Unknown blackhole = "+resource[:unknown_blackhole].inspect
-    Puppet.debug "Unknown blackhole == 'false' => "+(resource[:unknown_blackhole]  == 'false').inspect
-    Puppet.debug "Unknown blackhole == :false => "+(resource[:unknown_blackhole]  == :false).inspect
-    Puppet.debug "Unknown blackhole == false => "+(resource[:unknown_blackhole]  == false).inspect
       
     Puppet.debug "POST notification_rules PARAMS = "+params.inspect
     response = self.class.http_post("contacts/#{resource[:contact]}/notification_rules", params)
@@ -222,11 +234,13 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       operations.push op
     end            
     
-    unknown_blackhole = resource[:unknown_blackhole]
-    warning_blackhole = resource[:warning_blackhole]
-    critical_blackhole = resource[:critical_blackhole]
+    if resource[:unknown_blackhole] != current[:unknown_blackhole]
+      if (resource[:unknown_blackhole] == :true)
+        unknown_blackhole = true
+      else
+        unknown_blackhole = false
+      end
       
-    if unknown_blackhole != current[:unknown_blackhole]
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/unknown_blackhole',
@@ -235,7 +249,13 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       operations.push op
     end          
     
-    if warning_blackhole != current[:warning_blackhole]
+    if resource[:warning_blackhole] != current[:warning_blackhole]
+      if (resource[:warning_blackhole] == :true)
+        warning_blackhole = true
+      else
+        warning_blackhole = false
+      end
+      
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/warning_blackhole',
@@ -244,7 +264,13 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       operations.push op
     end          
     
-    if critical_blackhole != current[:critical_blackhole]
+    if resource[:critical_blackhole] != current[:critical_blackhole]
+      if (resource[:critical_blackhole] == :true)
+        critical_blackhole = true
+      else
+        critical_blackhole = false
+      end
+      
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/critical_blackhole',
