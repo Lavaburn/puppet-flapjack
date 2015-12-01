@@ -106,9 +106,9 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       :warning_media      => resource[:warning_media],
       :critical_media     => resource[:critical_media],
       # Puppet seems to make this a String?
-      :unknown_blackhole  => (resource[:unknown_blackhole] == 'false'),
-      :warning_blackhole  => (resource[:warning_blackhole] == 'false'),
-      :critical_blackhole => (resource[:critical_blackhole] == 'false'),
+      :unknown_blackhole  => (resource[:unknown_blackhole] == 'true'),
+      :warning_blackhole  => (resource[:warning_blackhole] == 'true'),
+      :critical_blackhole => (resource[:critical_blackhole] == 'true'),
     }
                 
     rules = Array.new
