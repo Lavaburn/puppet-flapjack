@@ -224,7 +224,7 @@ production:
       enabled: yes
       queue: webhook_notifications
       hooks:
-        - url: "http://127.0.0.1/flapjack_notification"
+        - url: "http://127.0.0.1:8003/"
           timeout: 30
       logger:
         level: DEBUG
