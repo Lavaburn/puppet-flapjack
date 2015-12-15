@@ -45,6 +45,7 @@ production:
     sns_queue: <%= @notifier_sns_queue %>
     jabber_queue: <%= @notifier_jabber_queue %>
     pagerduty_queue: <%= @notifier_pagerduty_queue %>
+    webhook_queue: webhook_notifications	# TODO - MOVE TO TEMPLATE
     notification_log_file: <%= @log_dir %><%= @notification_log_file %>
     default_contact_timezone: <%= @default_contact_timezone %>
     logger:
@@ -218,6 +219,16 @@ production:
       logger:
         level: <%= @oobetet_log_level %>
         syslog_errors: <%= @oobetet_syslog_errors %>
+    # TODO - template it !!!
+    webhook:
+      enabled: yes
+      queue: webhook_notifications
+      hooks:
+        - url: "http://127.0.0.1/flapjack_notification"
+          timeout: 30
+      logger:
+        level: DEBUG
+        syslog_errors: yes
 
 development:
   pid_dir: tmp/pids/
