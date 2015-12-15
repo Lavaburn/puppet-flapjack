@@ -219,16 +219,6 @@ production:
       logger:
         level: <%= @oobetet_log_level %>
         syslog_errors: <%= @oobetet_syslog_errors %>
-    # TODO - template it !!!
-    webhook:
-      enabled: yes
-      queue: webhook_notifications
-      hooks:
-        - url: "http://127.0.0.1:8003/"
-          timeout: 30
-      logger:
-        level: DEBUG
-        syslog_errors: yes
 
 development:
   pid_dir: tmp/pids/
