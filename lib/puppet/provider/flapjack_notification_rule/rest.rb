@@ -135,7 +135,7 @@ Puppet::Type.type(:flapjack_notification_rule).provide :rest, :parent => Puppet:
       :notification_rules   => rules,
     }
       
-    Puppet.debug "POST notification_rules PARAMS = "+params.inspect
+    #Puppet.debug "POST notification_rules PARAMS = "+params.inspect
     response = self.class.http_post("contacts/#{resource[:contact]}/notification_rules", params)
   end
 

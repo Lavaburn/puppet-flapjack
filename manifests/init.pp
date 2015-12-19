@@ -1,5 +1,11 @@
 # === Parameters
 #
+# [*package*]
+#   package file for custom DEB installation (RPM not currently supported)
+# [*repo_version*]
+#   APT repository version
+# [*repo*]
+#   APT repository 
 # [*pid_dir*]
 #   pid directory. Default: /var/run/flapjack/
 # [*log_dir*]
@@ -213,6 +219,7 @@
 #
 class flapjack (
   # Repository/Package
+  $package      = undef,
   $repo_version = 'v1',
   $repo         = 'main',
 
@@ -245,6 +252,7 @@ class flapjack (
   $processor_syslog_errors                     = yes,
 
   # Notifier
+  # TODO This code need to be split up into different defines. Use yaml_config to configure?
   $notifier_enabled          = yes,
 
   $notifier_email_queue      = email_notifications,
@@ -360,9 +368,12 @@ class flapjack (
   $oobetet_log_level         = INFO,
   $oobetet_syslog_errors     = yes,
 ) {
-  class { 'flapjack::repo':
-
-  } ->
+  if ($package == undef) {
+	  class { 'flapjack::repo':
+	
+    } -> Class['flapjack::install']
+  }
+  
   class { 'flapjack::install':
 
   } ->

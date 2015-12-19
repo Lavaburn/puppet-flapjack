@@ -1,5 +1,14 @@
 class flapjack::install {
-  package { 'flapjack':
-    ensure => present
+  if ($flapjack::package == undef) {
+    # Install from Repository
+    package { 'flapjack': 
+      ensure => present
+    } 
+  } else {     
+    package { 'flapjack': 
+      provider => dpkg,
+      ensure   => installed,
+      source   => $flapjack::package,
+    }
   }
 }
