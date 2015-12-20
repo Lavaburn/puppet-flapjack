@@ -27,6 +27,8 @@ describe 'flapjack' do
 	  
       it { should contain_class('flapjack') }
         
+      it { should contain_service('flapjack') }
+        
 #      TODO
     end
   end
@@ -49,7 +51,9 @@ describe 'flapjack' do
   	it { should compile.with_all_deps }
     
     it { should contain_class('flapjack') }
-              
+
+    it { should contain_service('flapjack') }
+      
     # TODO        
   end  
 end

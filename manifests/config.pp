@@ -36,16 +36,12 @@ class flapjack::config {
 #  if ! defined(Package['logrotate']) {
 #    ensure_packages['logrotate']
 #  }
-  # TODO - breaks current dependencies - better take it out of module?
-  include logrotate::base   # rodjek/logrotate
-
-  file { "/etc/logrotate.d/flapjack":
-    ensure  => file,
-    content => template('flapjack/flapjack_logrotate.conf.erb'),
-    require => [
-      Class['logrotate::base'],
-      File["/etc/flapjack"],
-    ]
+  
+  if ($setup_logrotate) {	
+	  file { "/etc/logrotate.d/flapjack":
+	    ensure  => file,
+	    content => template('flapjack/flapjack_logrotate.conf.erb'),
+	  }
   }
 
   if ($embedded_redis) {

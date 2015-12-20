@@ -26,9 +26,10 @@
 #  Default: yes
 define flapjack::config::gateway::oobetet (
   # Common Config 
-  $config_dir  = '/etc/flapjack',
-  $config_file = 'flapjack_config.yaml',
-  $environment = 'production',
+  $config_dir      = '/etc/flapjack',
+  $config_file     = 'flapjack_config.yaml',
+  $environment     = 'production',
+  $refresh_service = true,
   
   # Parameters
   $enabled           = 'no',
@@ -114,5 +115,9 @@ define flapjack::config::gateway::oobetet (
     key_prefix    => $key_prefix,
     log_level     => $log_level,
     syslog_errors => $syslog_errors,
+  }
+  
+  if ($refresh_service) {
+    Flapjack::Config::Gateway::Oobetet[$name] ~> Service['flapjack']
   }
 }

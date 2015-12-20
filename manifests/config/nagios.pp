@@ -8,9 +8,10 @@
 #  Default: /var/lib/nagios3/rw/nagios.cmd
 define flapjack::config::nagios (
   # Common Config 
-  $config_dir  = '/etc/flapjack',
-  $config_file = 'flapjack_config.yaml',
-  $environment = 'production',
+  $config_dir      = '/etc/flapjack',
+  $config_file     = 'flapjack_config.yaml',
+  $environment     = 'production',
+  $refresh_service = true,
   
   # Parameters
   $nagios_receiver_fifo = '/var/cache/nagios3/event_stream.fifo',
@@ -61,5 +62,9 @@ define flapjack::config::nagios (
   yaml_setting { "${title_prefix_nsca}_log_dir":
     key    => "${key_prefix_nsca}/log_dir",
     value  => $log_dir,
+  }
+  
+  if ($refresh_service) {
+    Flapjack::Config::Nagios[$name] ~> Service['flapjack']
   }
 }

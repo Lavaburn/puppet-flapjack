@@ -7,7 +7,8 @@ describe 'flapjack class' do
       		  class { '::flapjack': }
       		  flapjack::config::base { 'dev': }
             flapjack::config::redis { 'dev': }
-            flapjack::config::processor { 'dev': }
+            flapjack::config::processor { 'dev': }  
+            flapjack::config::notifier { 'dev': }
             flapjack::config::gateway::email { 'dev': }
       		EOS
 
@@ -17,6 +18,7 @@ describe 'flapjack class' do
       		expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
       		
       		# TODO - test service running without issue?
+      		# TODO - compare the config file
       	end
     end
 end

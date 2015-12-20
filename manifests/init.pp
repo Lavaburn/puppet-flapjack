@@ -8,12 +8,15 @@
 #   APT repository 
 # [*embedded_redis*]
 #   use embedded redis. Default: true
+# [*setup_logrotate*]
+#   Setup the logrotate config
 class flapjack (
   # Repository/Package
-  $package        = undef,
-  $repo_version   = 'v1',
-  $repo           = 'main',
-  $embedded_redis = true,
+  $package         = undef,
+  $repo_version    = 'v1',
+  $repo            = 'main',
+  $embedded_redis  = true,
+  $setup_logrotate = false,
 ) {
   if ($package == undef) {
 	  class { 'flapjack::repo':

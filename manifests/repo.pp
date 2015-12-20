@@ -20,7 +20,7 @@ class flapjack::repo {
       apt::source { 'flapjack':
         location    => "http://packages.flapjack.io/deb/${flapjack::repo_version}",
         repos       => $flapjack::repo,
-        key         => '803709B6', # The id should be a full fingerprint (40 characters)
+        key         => '803709B6', # TODO - FULL FINGERPRINT: A9355790877AB44E94580A8E8406B0E3803709B6
         # No longer supported? - include_src => false,
       }
     }

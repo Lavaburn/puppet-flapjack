@@ -69,4 +69,8 @@ define flapjack::config::gateway::sns (
     key    => "${key_prefix_notifier}/sns_queue",
     value  => $queue,
   }
+  
+  if ($refresh_service) {
+    Flapjack::Config::Gateway::Sns[$name] ~> Service['flapjack']
+  }
 }

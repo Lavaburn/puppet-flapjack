@@ -8,9 +8,10 @@
 #   send errors to syslog??. Default: yes
 define flapjack::config::base (
   # Common Config 
-  $config_dir  = '/etc/flapjack',
-  $config_file = 'flapjack_config.yaml',
-  $environment = 'production',
+  $config_dir      = '/etc/flapjack',
+  $config_file     = 'flapjack_config.yaml',
+  $environment     = 'production',
+  $refresh_service = true,
   
   # Parameters
   $pid_dir       = '/var/run/flapjack/',
@@ -50,5 +51,9 @@ define flapjack::config::base (
     key_prefix    => $key_prefix,
     log_level     => $log_level,
     syslog_errors => $syslog_errors,
+  }
+  
+  if ($refresh_service) {
+    Flapjack::Config::Base[$name] ~> Service['flapjack']
   }
 }

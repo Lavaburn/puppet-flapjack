@@ -1,5 +1,5 @@
 # [*enabled*]
-#  Default: no
+#  Default: yes
 # [*port*]
 #  Default: 3080
 # [*timeout*]
@@ -20,12 +20,13 @@
 #  Default: yes
 define flapjack::config::gateway::web (
   # Common Config 
-  $config_dir  = '/etc/flapjack',
-  $config_file = 'flapjack_config.yaml',
-  $environment = 'production',
+  $config_dir      = '/etc/flapjack',
+  $config_file     = 'flapjack_config.yaml',
+  $environment     = 'production',
+  $refresh_service = true,
   
   # Parameters
-  $enabled         = 'no',
+  $enabled         = 'yes',
   $port            = 3080,
   $timeout         = 300,
   $auto_refresh    = 120,
@@ -87,5 +88,9 @@ define flapjack::config::gateway::web (
     key_prefix    => $key_prefix,
     log_level     => $log_level,
     syslog_errors => $syslog_errors,
+  }
+  
+  if ($refresh_service) {
+    Flapjack::Config::Gateway::Web[$name] ~> Service['flapjack']
   }
 }

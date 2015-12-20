@@ -21,6 +21,7 @@ define flapjack::config::processor (
   $config_dir  = '/etc/flapjack',
   $config_file = 'flapjack_config.yaml',
   $environment = 'production',
+  $refresh_service = true,
   
   # Parameters
   $enabled                                     = 'yes',
@@ -81,5 +82,9 @@ define flapjack::config::processor (
     key_prefix    => $key_prefix,
     log_level     => $log_level,
     syslog_errors => $syslog_errors,
+  }
+  
+  if ($refresh_service) {
+    Flapjack::Config::Processor[$name] ~> Service['flapjack']
   }
 }
