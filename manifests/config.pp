@@ -1,26 +1,33 @@
 class flapjack::config {
-  file { '/var/run/flapjack':
-    ensure  => directory,
-    mode    => '0755',
-    require => [ Package['flapjack'] ],
-  }
+#  file { '/var/run/flapjack':
+#    ensure  => directory,
+#    mode    => '0755',
+#    require => [ Package['flapjack'] ],
+#  }
+#
+#  file { '/var/log/flapjack':
+#    ensure  => directory,
+#    mode    => '0777',
+#    require => [ Package['flapjack'] ],
+#  }
+#
+#  file { '/etc/flapjack':
+#    ensure  => directory,
+#    require => [ Package['flapjack'] ],
+#  }
+#  
+#  file { '/etc/flapjack/flapjack_config.yaml':
+#    content  => template('flapjack/flapjack_config.yaml.erb'),
+#  }
 
-  file { '/var/log/flapjack':
-    ensure  => directory,
-    mode    => '0777',
-    require => [ Package['flapjack'] ],
-  }
-
-  file { '/etc/flapjack':
-    ensure  => directory,
-    require => [ Package['flapjack'] ],
-  }
-
-  # TEMPLATE Config here!
-  file { '/etc/flapjack/flapjack_config.yaml':
-    content  => template('flapjack/flapjack_config.yaml.erb'),
-  }
-
+  # Replaced by:
+    # flapjack::config::base (REQUIRED)
+    # flapjack::config::redis
+    # flapjack::config::processor
+    # flapjack::config::notifier
+    # flapjack::config::nagios
+    # flapjack::config::gateway::email
+  
   #file { '/etc/init.d/flapjack-web-api':
   #  source  => 'puppet:///modules/flapjack/etc/init.d/flapjack-web-api',
   #}
@@ -29,6 +36,7 @@ class flapjack::config {
 #  if ! defined(Package['logrotate']) {
 #    ensure_packages['logrotate']
 #  }
+  # TODO - breaks current dependencies - better take it out of module?
   include logrotate::base   # rodjek/logrotate
 
   file { "/etc/logrotate.d/flapjack":

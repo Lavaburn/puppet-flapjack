@@ -10,7 +10,7 @@ production:
   redis:
     host: <%= @redis_host %>
     port: <%= @redis_port %>
-    db: <%= @redis_db %>
+    db: <%= @redis_db %> 
   # Processes monitoring events off the *events* queue (a redis list) and decides
   # what actions to take (generate notification event, record state changes, etc)
   processor:
@@ -59,6 +59,14 @@ production:
     fifo: "<%= @ncsa_receiver_fifo %>"
     pid_dir: "<%= @pid_dir %>"
     log_dir: "<%= @log_dir %>"
+  
+  
+  
+  
+  
+  
+  
+  
   gateways:
     # Generates email notifications
     email:
@@ -275,36 +283,13 @@ development:
     fifo: "/var/lib/nagios3/rw/nagios.cmd"
     pid_dir: "tmp/pids/"
     log_dir: "log/"
+    
+    
+    
+    
+    
+    
   gateways:
-    # Generates email notifications
-    email:
-      enabled: no
-      # the redis queue this pikelet will look for notifications on
-      queue: email_notifications
-      logger:
-        level: DEBUG
-        syslog_errors: yes
-      # these values are passed directly through to EventMachine::Protocols::SmtpClient configuration,
-      # and can be omitted if the defaults are acceptable
-      smtp_config:
-        # from: "Flapjack Example <flapjack@noreply.example>"
-        # reply_to: "flapjack@support.example"
-        host: 127.0.0.1
-        # 1025 is the default port for http://mailcatcher.me
-        port: 1025
-        starttls: false
-        #auth:
-        #  type:
-        #  username:
-        #  password:
-      # location of custom alert templates
-      #templates:
-      #  rollup_subject.text: '/etc/flapjack/templates/email/rollup_subject.text.erb'
-      #  alert_subject.text: '/etc/flapjack/templates/email/alert_subject.text.erb'
-      #  rollup.text: '/etc/flapjack/templates/email/rollup.text.erb'
-      #  alert.text: '/etc/flapjack/templates/email/alert.text.erb'
-      #  rollup.html: '/etc/flapjack/templates/email/rollup.html.erb'
-      #  alert.html: '/etc/flapjack/templates/email/alert.html.erb'
     # Generates sms notifications
     sms:
       enabled: no
