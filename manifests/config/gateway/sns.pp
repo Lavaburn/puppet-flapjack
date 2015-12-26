@@ -19,13 +19,13 @@ define flapjack::config::gateway::sns (
   $environment = 'production',
 
   # Parameters
-  $enabled       = 'no',
+  $enabled       = true,
   $queue         = 'sns_notifications',
   $access_key    = 'AKIAIOSFODNN7EXAMPLE',
   $secret_key    = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
   $region_name   = undef,
   $log_level     = 'INFO',
-  $syslog_errors = yes,
+  $syslog_errors = true,
 ) {
   # Common Config
   Yaml_setting {

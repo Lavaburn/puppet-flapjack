@@ -26,7 +26,7 @@ define flapjack::config::gateway::web (
   $refresh_service = true,
 
   # Parameters
-  $enabled         = 'yes',
+  $enabled         = true,
   $port            = 3080,
   $timeout         = 300,
   $auto_refresh    = 120,
@@ -35,7 +35,7 @@ define flapjack::config::gateway::web (
   $api_url         = "http://localhost:3081/",
   $logo_image_path = undef,
   $log_level       = 'INFO',
-  $syslog_errors   = yes,
+  $syslog_errors   = true,
 ) {
   # Common Config
   Yaml_setting {

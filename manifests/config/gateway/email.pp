@@ -32,7 +32,7 @@ define flapjack::config::gateway::email (
   $refresh_service = true,
 
   # Parameters
-  $enabled        = 'no',
+  $enabled        = true,
   $queue          = 'email_notifications',
   $smtp_from      = undef,
   $smtp_host      = '127.0.0.1',
@@ -44,7 +44,7 @@ define flapjack::config::gateway::email (
   $smtp_auth_pass = undef,
   $templates      = undef,
   $log_level      = 'INFO',
-  $syslog_errors  = yes,
+  $syslog_errors  = true,
 ) {
   # Common Config
   Yaml_setting {

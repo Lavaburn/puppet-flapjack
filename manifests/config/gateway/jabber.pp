@@ -30,7 +30,7 @@ define flapjack::config::gateway::jabber (
   $refresh_service = true,
 
   # Parameters
-  $enabled       = 'no',
+  $enabled       = true,
   $queue         = 'jabber_notifications',
   $server        = 'jabber.example.com',
   $port          = 5222,
@@ -41,7 +41,7 @@ define flapjack::config::gateway::jabber (
   $rooms         = [ 'gimp@conference.jabber.example.com' ],
   $templates     = undef,
   $log_level     = 'INFO',
-  $syslog_errors = yes,
+  $syslog_errors = true,
 ) {
   # Common Config
   Yaml_setting {

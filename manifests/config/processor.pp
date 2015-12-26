@@ -24,7 +24,7 @@ define flapjack::config::processor (
   $refresh_service = true,
 
   # Parameters
-  $enabled                                     = 'yes',
+  $enabled                                     = true,
   $processor_queue                             = 'events',
   $notifier_queue                              = 'notifications',
   $archive_events                              = true,
@@ -32,7 +32,7 @@ define flapjack::config::processor (
   $new_check_scheduled_maintenance_duration    = '100 years',
   $new_check_scheduled_maintenance_ignore_tags = [ 'bypass_ncsm' ],
   $log_level                                   = 'INFO',
-  $syslog_errors                               = 'yes',
+  $syslog_errors                               = true,
 ) {
   # Common Config
   Yaml_setting {
@@ -76,6 +76,7 @@ define flapjack::config::processor (
   yaml_setting { "${title_prefix}_new_check_scheduled_maintenance_ignore_tags":
     key    => "${key_prefix}/new_check_scheduled_maintenance_ignore_tags",
     value  => $new_check_scheduled_maintenance_ignore_tags,
+    type   => 'array',
   }
 
   flapjack::config::log { $title_prefix:

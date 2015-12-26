@@ -22,14 +22,14 @@ define flapjack::config::gateway::sms_twilio (
   $refresh_service = true,
 
   # Parameters
-  $enabled       = 'no',
+  $enabled       = true,
   $queue         = 'sms_twilio_notifications',
   $account_sid   = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
   $auth_token    = 'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy',
   $from          = '+1xxxxxxxxxx',
   $templates     = undef,
   $log_level     = 'INFO',
-  $syslog_errors = yes,
+  $syslog_errors = true,
 ) {
   # Common Config
   Yaml_setting {
@@ -38,7 +38,7 @@ define flapjack::config::gateway::sms_twilio (
 
   # SMS (Twilio) Gateway
   $title_prefix = "flapjack_${name}_gateways_sms"
-  $key_prefix = "${environment}/gateways/sms"
+  $key_prefix = "${environment}/gateways/sms_twilio"
 
   yaml_setting { "${title_prefix}_enabled":
     key    => "${key_prefix}/enabled",

@@ -18,12 +18,13 @@ define flapjack::config::notifier (
   $refresh_service = true,
 
   # Parameters
-  $enabled                   = yes,
+  $enabled                   = true,
   $notifier_queue            = 'notifications',
+  $log_dir                   = '/var/log/flapjack/',
   $log_file                  = 'notification.log',
   $default_contact_timezone  = 'UTC',
   $log_level                 = 'INFO',
-  $syslog_errors             = yes,
+  $syslog_errors             = true,
 ) {
   # Common Config
   Yaml_setting {
@@ -46,7 +47,7 @@ define flapjack::config::notifier (
 
   yaml_setting { "${title_prefix}_notification_log_file":
     key    => "${key_prefix}/notification_log_file",
-    value  => $log_file,
+    value  => "${log_dir}/${log_file}",
   }
 
   yaml_setting { "${title_prefix}_default_contact_timezone":

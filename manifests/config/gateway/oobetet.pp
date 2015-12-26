@@ -32,7 +32,7 @@ define flapjack::config::gateway::oobetet (
   $refresh_service = true,
 
   # Parameters
-  $enabled           = 'no',
+  $enabled           = true,
   $server            = 'jabber.example.com',
   $port              = 5222,
   $id                = 'flapjacktest@jabber.example.com',
@@ -44,7 +44,7 @@ define flapjack::config::gateway::oobetet (
   $pagerduty_contact = '11111111111111111111111111111111',
   $rooms             = [ 'flapjacktest@conference.jabber.example.com' ],
   $log_level         = 'INFO',
-  $syslog_errors     = yes,
+  $syslog_errors     = true,
 ) {
   # Common Config
   Yaml_setting {

@@ -17,7 +17,7 @@ define flapjack::config::base (
   $pid_dir       = '/var/run/flapjack/',
   $log_dir       = '/var/log/flapjack/',
   $log_level     = 'INFO',
-  $syslog_errors = yes,
+  $syslog_errors = true,
 ) {
   # Common Config
   ensure_resource('file', $config_dir, {'ensure' => 'directory' })
@@ -44,7 +44,7 @@ define flapjack::config::base (
 
   yaml_setting { "${title_prefix}_daemonize":
     key    => "${key_prefix}/daemonize",
-    value  => 'yes',
+    value  => true,
   }
 
   flapjack::config::log { $title_prefix:

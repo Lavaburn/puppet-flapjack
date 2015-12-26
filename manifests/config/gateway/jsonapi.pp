@@ -22,14 +22,14 @@ define flapjack::config::gateway::jsonapi (
   $refresh_service = true,
 
   # Parameters
-  $enabled         = 'yes',
+  $enabled         = true,
   $port            = 3081,
   $timeout         = 300,
   $log_dir         = '/var/log/flapjack',
   $access_log      = 'jsonapi_access.log',
   $base_url        = "http://localhost:3081/",
   $log_level       = 'INFO',
-  $syslog_errors   = yes,
+  $syslog_errors   = true,
 ) {
   # Common Config
   Yaml_setting {

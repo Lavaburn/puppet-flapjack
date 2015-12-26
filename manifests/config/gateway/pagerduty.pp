@@ -16,11 +16,11 @@ define flapjack::config::gateway::pagerduty (
   $refresh_service = true,
 
   # Parameters
-  $enabled       = 'no',
+  $enabled       = true,
   $queue         = 'pagerduty_notifications',
   $templates     = undef,
   $log_level     = 'INFO',
-  $syslog_errors = yes,
+  $syslog_errors = true,
 ) {
   # Common Config
   Yaml_setting {

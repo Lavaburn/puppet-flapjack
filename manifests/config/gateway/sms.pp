@@ -22,14 +22,14 @@ define flapjack::config::gateway::sms (
   $refresh_service = true,
 
   # Parameters
-  $enabled       = 'no',
+  $enabled       = true,
   $queue         = 'sms_notifications',
   $endpoint      = 'https://www.messagenet.com.au/dotnet/Lodge.asmx/LodgeSMSMessage',
   $username      = 'username',
   $password      = 'password',
   $templates     = undef,
   $log_level     = 'INFO',
-  $syslog_errors = yes,
+  $syslog_errors = true,
 ) {
   # Common Config
   Yaml_setting {
