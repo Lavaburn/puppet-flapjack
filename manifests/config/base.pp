@@ -25,6 +25,7 @@ define flapjack::config::base (
 ) {
   # Common Config
   ensure_resource('file', $config_dir, {'ensure' => 'directory', owner => $owner, group => $group, mode => $mode })
+  ensure_resource('file', "${config_dir}/${config_file}", {'ensure' => 'file', owner => $owner, group => $group, mode => '0644' })
   ensure_resource('file', $pid_dir, {'ensure' => 'directory', owner => $owner, group => $group, mode => $mode })
   ensure_resource('file', $log_dir, {'ensure' => 'directory', owner => $owner, group => $group, mode => $mode })
 
