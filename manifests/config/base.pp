@@ -18,11 +18,15 @@ define flapjack::config::base (
   $log_dir       = '/var/log/flapjack/',
   $log_level     = 'INFO',
   $syslog_errors = true,
+
+  $owner = 'flapjack',
+  $group = 'flapjack',
+  $mode  = '0775',
 ) {
   # Common Config
-  ensure_resource('file', $config_dir, {'ensure' => 'directory' })
-  ensure_resource('file', $pid_dir, {'ensure' => 'directory', mode => '0755' })
-  ensure_resource('file', $log_dir, {'ensure' => 'directory', mode => '0777' })
+  ensure_resource('file', $config_dir, {'ensure' => 'directory', owner => $owner, group => $group, mode => $mode })
+  ensure_resource('file', $pid_dir, {'ensure' => 'directory', owner => $owner, group => $group, mode => $mode })
+  ensure_resource('file', $log_dir, {'ensure' => 'directory', owner => $owner, group => $group, mode => $mode })
 
   Yaml_setting {
     target => "${config_dir}/${config_file}",
