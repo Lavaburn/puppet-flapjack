@@ -28,6 +28,7 @@ define flapjack::config::base (
   ensure_resource('file', $pid_dir, {'ensure' => 'directory', owner => $owner, group => $group, mode => $mode })
   ensure_resource('file', $log_dir, {'ensure' => 'directory', owner => $owner, group => $group, mode => $mode })
 
+  File[$config_dir] ->
   Yaml_setting {
     target => "${config_dir}/${config_file}",
   }

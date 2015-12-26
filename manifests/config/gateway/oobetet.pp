@@ -47,6 +47,7 @@ define flapjack::config::gateway::oobetet (
   $syslog_errors     = true,
 ) {
   # Common Config
+  File[$config_dir] ->
   Yaml_setting {
     target => "${config_dir}/${config_file}",
   }
