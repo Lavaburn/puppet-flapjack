@@ -17,7 +17,6 @@ define flapjack::config::redis (
   $db   = 0,
 ) {
   # Common Config
-  File[$config_dir] ->
   Yaml_setting {
     target => "${config_dir}/${config_file}",
   }

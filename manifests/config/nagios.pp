@@ -21,7 +21,6 @@ define flapjack::config::nagios (
   $log_dir              = '/var/log/flapjack/',
 ) {
   # Common Config
-  File[$config_dir] ->
   Yaml_setting {
     target => "${config_dir}/${config_file}",
   }

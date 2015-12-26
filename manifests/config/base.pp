@@ -28,7 +28,6 @@ define flapjack::config::base (
   ensure_resource('file', $pid_dir, {'ensure' => 'directory', owner => $owner, group => $group, mode => $mode })
   ensure_resource('file', $log_dir, {'ensure' => 'directory', owner => $owner, group => $group, mode => $mode })
 
-  File[$config_dir] ->
   Yaml_setting {
     target => "${config_dir}/${config_file}",
   }
@@ -37,21 +36,25 @@ define flapjack::config::base (
   $title_prefix = "flapjack_${name}_base"
   $key_prefix = "${environment}"
 
+  File[$config_dir] ->
   yaml_setting { "${title_prefix}_pid_dir":
     key    => "${key_prefix}/pid_dir",
     value  => $pid_dir,
   }
 
+  File[$config_dir] ->
   yaml_setting { "${title_prefix}_log_dir":
     key    => "${key_prefix}/log_dir",
     value  => $log_dir,
   }
 
+  File[$config_dir] ->
   yaml_setting { "${title_prefix}_daemonize":
     key    => "${key_prefix}/daemonize",
     value  => true,
   }
 
+  File[$config_dir] ->
   flapjack::config::log { $title_prefix:
     key_prefix    => $key_prefix,
     log_level     => $log_level,
