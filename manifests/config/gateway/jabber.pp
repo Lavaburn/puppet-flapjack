@@ -90,11 +90,13 @@ define flapjack::config::gateway::jabber (
   yaml_setting { "${title_prefix}_identifiers":
     key    => "${key_prefix}/identifiers",
     value  => $identifiers,
+    type   => 'array',
   }
 
   yaml_setting { "${title_prefix}_rooms":
     key    => "${key_prefix}/rooms",
     value  => $rooms,
+    type   => 'array',
   }
 
   # Templates

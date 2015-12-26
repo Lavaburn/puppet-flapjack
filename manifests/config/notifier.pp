@@ -20,7 +20,7 @@ define flapjack::config::notifier (
   # Parameters
   $enabled                   = true,
   $notifier_queue            = 'notifications',
-  $log_dir                   = '/var/log/flapjack/',
+  $log_dir                   = '/var/log/flapjack',
   $log_file                  = 'notification.log',
   $default_contact_timezone  = 'UTC',
   $log_level                 = 'INFO',
