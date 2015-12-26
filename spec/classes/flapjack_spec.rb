@@ -4,32 +4,47 @@ describe 'flapjack' do
   Puppet::Util::Log.level = :warning
   Puppet::Util::Log.newdestination(:console)
   
-#  let(:pre_condition) { 
-#    "class { '::a': }" 
-#  }
-
   context "ubuntu" do
   	let(:facts) { {
 	  	:osfamily 					      => 'debian',
 	  	:operatingsystem 			    => 'Ubuntu',
-#	  	:lsbdistid					      => 'Ubuntu',
-#	  	:lsbdistcodename 			    => 'precise',
-#	  	:operatingsystemrelease 	=> '12.04',
-#	  	:concat_basedir  			    => '/tmp', # Concat	  	
+	  	:lsbdistid					      => 'Ubuntu',
+	  	:lsbdistcodename 			    => 'precise',
+	  	:operatingsystemrelease 	=> '12.04',
+	  	:concat_basedir  			    => '/tmp', # Concat	  	
 	  } }
-	  
-#    let(:params) { {
-#      :compile_microkernel  => false,    
-#    } }
 	  
 	  context "ubuntu_defaults" do	  
 		  it { should compile.with_all_deps }
 	  
       it { should contain_class('flapjack') }
-        
-      it { should contain_service('flapjack') }
-        
-#      TODO
+      it { should contain_class('flapjack::repo') }
+      it { should contain_class('flapjack::install') }
+        it { should contain_package('flapjack') }
+      it { should contain_class('flapjack::config') }
+      it { should contain_class('flapjack::service') }   
+        it { should contain_service('flapjack') }     
+	    it { should contain_class('flapjack::flapjackfeeder') }
+    end
+    
+    context "ubuntu_package" do          
+      let(:params) { {
+        :package          => "package.deb",  
+        :setup_logrotate  => true,      
+      } }
+          
+      
+      it { should compile.with_all_deps }
+    
+      it { should contain_class('flapjack') }
+      it { should_not contain_class('flapjack::repo') }
+      it { should contain_class('flapjack::install') }
+        it { should contain_package('flapjack') }
+      it { should contain_class('flapjack::config') }
+        it { should contain_file('/etc/logrotate.d/flapjack') }
+      it { should contain_class('flapjack::service') }   
+        it { should contain_service('flapjack') }     
+      it { should contain_class('flapjack::flapjackfeeder') }
     end
   end
   
@@ -49,11 +64,14 @@ describe 'flapjack' do
     } }
     
   	it { should compile.with_all_deps }
-    
+  
     it { should contain_class('flapjack') }
-
-    it { should contain_service('flapjack') }
-      
-    # TODO        
+    it { should contain_class('flapjack::repo') }
+    it { should contain_class('flapjack::install') }
+      it { should contain_package('flapjack') }
+    it { should contain_class('flapjack::config') }
+    it { should contain_class('flapjack::service') }   
+      it { should contain_service('flapjack') }     
+    it { should contain_class('flapjack::flapjackfeeder') }
   end  
 end

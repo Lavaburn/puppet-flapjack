@@ -11,29 +11,29 @@
 # [*syslog_errors*]
 #  Default: yes
 define flapjack::config::notifier (
-  # Common Config 
+  # Common Config
   $config_dir      = '/etc/flapjack',
   $config_file     = 'flapjack_config.yaml',
   $environment     = 'production',
   $refresh_service = true,
-  
-  # Parameters  
+
+  # Parameters
   $enabled                   = yes,
   $notifier_queue            = 'notifications',
   $log_file                  = 'notification.log',
-  $default_contact_timezone  = UTC,
-  $log_level                 = INFO,
+  $default_contact_timezone  = 'UTC',
+  $log_level                 = 'INFO',
   $syslog_errors             = yes,
 ) {
-  # Common Config 
+  # Common Config
   Yaml_setting {
     target => "${config_dir}/${config_file}",
   }
-  
+
   # Notifier
   $title_prefix = "flapjack_${environment}_notifier"
   $key_prefix = "${environment}/notifier"
-  
+
   yaml_setting { "${title_prefix}_enabled":
     key    => "${key_prefix}/enabled",
     value  => $enabled,
@@ -43,25 +43,25 @@ define flapjack::config::notifier (
     key    => "${key_prefix}/queue",
     value  => $notifier_queue,
   }
-  
+
   yaml_setting { "${title_prefix}_notification_log_file":
     key    => "${key_prefix}/notification_log_file",
     value  => $log_file,
   }
-  
+
   yaml_setting { "${title_prefix}_default_contact_timezone":
     key    => "${key_prefix}/default_contact_timezone",
     value  => $default_contact_timezone,
   }
-  
-  flapjack::config::base { $title_prefix:
+
+  flapjack::config::log { $title_prefix:
     key_prefix    => $key_prefix,
     log_level     => $log_level,
     syslog_errors => $syslog_errors,
   }
-  
+
   if ($refresh_service) {
     Flapjack::Config::Notifier[$name] ~> Service['flapjack']
   }
 }
-  
+

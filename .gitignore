@@ -1,2 +1,6 @@
 .vagrant
 /metadata.json
+/Gemfile.lock
+/.project
+/log
+/junit

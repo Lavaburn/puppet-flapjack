@@ -15,7 +15,7 @@ class flapjack::config {
 #    ensure  => directory,
 #    require => [ Package['flapjack'] ],
 #  }
-#  
+#
 #  file { '/etc/flapjack/flapjack_config.yaml':
 #    content  => template('flapjack/flapjack_config.yaml.erb'),
 #  }
@@ -27,7 +27,7 @@ class flapjack::config {
     # flapjack::config::notifier
     # flapjack::config::nagios
     # flapjack::config::gateway::email
-  
+
   #file { '/etc/init.d/flapjack-web-api':
   #  source  => 'puppet:///modules/flapjack/etc/init.d/flapjack-web-api',
   #}
@@ -36,15 +36,15 @@ class flapjack::config {
 #  if ! defined(Package['logrotate']) {
 #    ensure_packages['logrotate']
 #  }
-  
-  if ($setup_logrotate) {	
+
+  if ($flapjack::setup_logrotate) {
 	  file { "/etc/logrotate.d/flapjack":
 	    ensure  => file,
 	    content => template('flapjack/flapjack_logrotate.conf.erb'),
 	  }
   }
 
-  if ($embedded_redis) {
+  if ($flapjack::embedded_redis) {
     case $::osfamily {
       'redhat': {
 		    file { '/etc/init.d/redis-flapjack':

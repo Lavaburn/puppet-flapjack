@@ -1,5 +1,5 @@
 require 'beaker-rspec'
-require 'pry'
+#require 'pry'
 
 hosts.each do |host|
   # Using box with pre-installed Puppet !
@@ -18,6 +18,10 @@ RSpec.configure do |c|
   	c.before :suite do
   		# Install dependencies
   		 hosts.each do |host|
+#         on host, 'apt-get update'
+  		   
+# PATH /opt/puppetlabs/bin/  		   
+         on host, puppet('module', 'install', 'puppetlabs-apt'), { :acceptable_exit_codes => [0,1] }
          on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
 	       on host, puppet('module', 'install', 'reidmv-yamlfile'), { :acceptable_exit_codes => [0,1] }
 	     end
