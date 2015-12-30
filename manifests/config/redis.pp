@@ -38,7 +38,7 @@ define flapjack::config::redis (
     value  => $port,
   }
 
-  if ($redis_password != false and $redis_password != undef) {
+  if ($password != false and $password != undef) {
 	  yaml_setting { "${title_prefix}_password":
 	    key    => "${key_prefix}/password",
 	    value  => $password,
