@@ -43,6 +43,11 @@ define flapjack::config::redis (
 	    key    => "${key_prefix}/password",
 	    value  => $password,
 	  }
+  } else {
+    yaml_setting { "${title_prefix}_password":
+      ensure => 'absent',
+      key    => "${key_prefix}/password",
+    }
   }
 
   yaml_setting { "${title_prefix}_db":
