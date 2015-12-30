@@ -5,13 +5,14 @@
 # [*repo_version*]
 #   APT repository version
 # [*repo*]
-#   APT repository 
+#   APT repository
 # [*embedded_redis*]
 #   use embedded redis. Default: true
 # [*setup_logrotate*]
 #   Setup the logrotate config
 class flapjack (
   # Repository/Package
+  $version         = 'installed',
   $package         = undef,
   $repo_version    = 'v1',
   $repo            = 'main',
@@ -20,10 +21,10 @@ class flapjack (
 ) {
   if ($package == undef) {
 	  class { 'flapjack::repo':
-	
+
     } -> Class['flapjack::install']
   }
-  
+
   class { 'flapjack::install':
 
   } ->
