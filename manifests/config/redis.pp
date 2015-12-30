@@ -1,8 +1,10 @@
-# [*redis_host*]
+# [*host*]
 #   redis host. Default: 127.0.0.1
-# [*redis_port*]
+# [*port*]
 #   redis port. Default: 6380
-# [*redis_db*]
+# [*password*]
+#   redis password. Default: false
+# [*db*]
 #   redis database. Default: 0
 define flapjack::config::redis (
   # Common Config
@@ -12,9 +14,10 @@ define flapjack::config::redis (
   $refresh_service = true,
 
   # Parameters
-  $host = '127.0.0.1',
-  $port = 6380,
-  $db   = 0,
+  $host     = '127.0.0.1',
+  $port     = 6380,
+  $password = false,
+  $db       = 0,
 ) {
   # Common Config
   Yaml_setting {
@@ -33,6 +36,13 @@ define flapjack::config::redis (
   yaml_setting { "${title_prefix}_port":
     key    => "${key_prefix}/port",
     value  => $port,
+  }
+
+  if ($redis_password != false and $redis_password != undef) {
+	  yaml_setting { "${title_prefix}_password":
+	    key    => "${key_prefix}/password",
+	    value  => $password,
+	  }
   }
 
   yaml_setting { "${title_prefix}_db":
