@@ -6,7 +6,7 @@ class flapjack::install {
     }
   } else {
     package { 'flapjack':
-      ensure   => $flapjack::version,
+      ensure   => 'latest',   # DPKG is not versionable?
       source   => $flapjack::package,
       provider => 'dpkg',
     }
