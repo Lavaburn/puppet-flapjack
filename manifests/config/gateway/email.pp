@@ -124,11 +124,9 @@ define flapjack::config::gateway::email (
     #   alert.text: '/etc/flapjack/templates/email/alert.text.erb'
     #   rollup.html: '/etc/flapjack/templates/email/rollup.html.erb'
     #   alert.html: '/etc/flapjack/templates/email/alert.html.erb'
-  if ($templates != undef) {
-	  yaml_setting { "${title_prefix}_templates":
-	    key    => "${key_prefix}/templates",
-	    value  => $templates,
-	  }
+  flapjack::config::template_config { $title_prefix:
+    path      => $key_prefix,
+    templates => $templates,
   }
 
   # Notifier

@@ -44,11 +44,9 @@ define flapjack::config::gateway::pagerduty (
   # Templates
     # HASH: eg.
     #  alert.text: '/etc/flapjack/templates/pagerduty/alert.text.erb'
-  if ($templates != undef) {
-    yaml_setting { "${title_prefix}_templates":
-      key    => "${key_prefix}/templates",
-      value  => $templates,
-    }
+  flapjack::config::template_config { $title_prefix:
+    path      => $key_prefix,
+    templates => $templates,
   }
 
   # Notifier

@@ -1,18 +1,17 @@
 # Fixtures file hold the dependencies for spec helper
 fixtures:
-#  forge_modules:
-#    stdlib:
-#      repo: "puppetlabs/stdlib"
-#      ref: "4.10.0"
-#    yamlfile:
-#      repo: "reidmv/yamlfile"
-#      ref: "0.2.0"
-#    apt:
-#      repo: "puppetlabs/apt"
-#      ref: "1.7.0"
-  repositories: 
-    stdlib: git://github.com/puppetlabs/puppetlabs-stdlib.git
-    yamlfile: git://github.com/reidmv/puppet-module-yamlfile.git
-    apt: git://github.com/puppetlabs/puppetlabs-apt.git
+  forge_modules:
+    filemapper:
+      repo: "adrien/filemapper"
+      ref: "1.1.3"    
+    apt:
+      repo: "puppetlabs/apt"
+      ref: "1.8.0"      
+    stdlib:
+      repo: "puppetlabs/stdlib"
+      ref: "4.6.0"  
+    yamlfile:
+      repo: "reidmv/yamlfile"
+      ref: "0.2.0"
   symlinks:
     flapjack: "#{source_dir}"
