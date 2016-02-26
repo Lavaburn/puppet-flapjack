@@ -27,7 +27,6 @@ describe 'flapjack::api' do
 	  
       it { should contain_class('flapjack::api') }
         
-      it { should contain_file('/etc/flapjack') }
       it { should contain_file('/etc/flapjack/puppet_api.yaml') }
         
       it { should contain_package('rest-client') }

@@ -23,7 +23,7 @@ define flapjack::config::template_config (
   if ($templates != undef) {
     validate_hash($templates)
 
-    $yaml = inline_template('<%= a = {}; templates.each { |k,v| a["#{name}_templates_#{k}"] = {"key" => "#{path}/templates/#{k}", "value" => "#{v}"} }; a.to_yaml %>')
+    $yaml = inline_template('<%= a = {}; @templates.each { |k,v| a["#{name}_templates_#{k}"] = {"key" => "#{path}/templates/#{k}", "value" => "#{v}"} }; a.to_yaml %>')
     $parsed_templates = parseyaml($yaml)
 
     create_resources('yaml_setting', $parsed_templates)
