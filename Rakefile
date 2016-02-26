@@ -49,7 +49,7 @@ end
 # Extra Tasks
 desc "Run metadata, syntax, lint, and spec tests."
 task :test => [
-  :metadata,
+  #:metadata,     # TODO Travis BUGFIX: "Don't know how to build task 'metadata' (see --tasks)"
 	:syntax,
 	:lint,
 	:spec,
