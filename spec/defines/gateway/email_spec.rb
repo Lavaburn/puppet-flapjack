@@ -17,7 +17,16 @@ describe 'flapjack::config::gateway::email', :type => :define do
 	  	:operatingsystemrelease 	=> '12.04',
 	  	:concat_basedir  			    => '/tmp', # Concat	 
 	  } }
-	  
+    
+    context "default" do
+      let(:title) {
+        'customtitle'
+      }
+      
+      it { should_not contain_yaml_setting("flapjack_customtitle_gateways_email_smtp_config_from") }
+      it { should_not contain_yaml_setting("flapjack_customtitle_gateways_email_smtp_config_auth_type") }
+    end   
+    
 	  context "with custom templates" do	  	        
       let(:title) {
         'customtitle'
@@ -36,6 +45,24 @@ describe 'flapjack::config::gateway::email', :type => :define do
         
       it { should contain_yaml_setting("flapjack_customtitle_gateways_email_templates_a").with_key('testing/gateways/email/templates/a') }
       it { should contain_yaml_setting("flapjack_customtitle_gateways_email_templates_b").with_value('2B') }              
-    end    
+    end
+    
+    context "authenticated" do
+      let(:title) {
+        'customtitle'
+      }
+      
+      let(:params) { {
+        :smtp_from      => 'test@example.com',
+        :smtp_auth      => true,
+        :smtp_auth_user => 'U',
+        :smtp_auth_pass => 'P',
+      } }
+      
+      it { should contain_yaml_setting("flapjack_customtitle_gateways_email_smtp_config_from").with_value('test@example.com') }
+      it { should contain_yaml_setting("flapjack_customtitle_gateways_email_smtp_config_auth_type").with_value(true) }
+      it { should contain_yaml_setting("flapjack_customtitle_gateways_email_smtp_config_auth_username").with_value('U') }
+      it { should contain_yaml_setting("flapjack_customtitle_gateways_email_smtp_config_auth_password").with_value('P') }
+    end  
   end   
 end

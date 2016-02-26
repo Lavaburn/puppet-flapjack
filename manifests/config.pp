@@ -1,61 +1,38 @@
+# Class: flapjack::config
+#
+# Private class. Only calling flapjack main class is supported.
+#
 class flapjack::config {
-#  file { '/var/run/flapjack':
-#    ensure  => directory,
-#    mode    => '0755',
-#    require => [ Package['flapjack'] ],
-#  }
-#
-#  file { '/var/log/flapjack':
-#    ensure  => directory,
-#    mode    => '0777',
-#    require => [ Package['flapjack'] ],
-#  }
-#
-#  file { '/etc/flapjack':
-#    ensure  => directory,
-#    require => [ Package['flapjack'] ],
-#  }
-#
-#  file { '/etc/flapjack/flapjack_config.yaml':
-#    content  => template('flapjack/flapjack_config.yaml.erb'),
-#  }
-
-  # Replaced by:
-    # flapjack::config::base (REQUIRED)
-    # flapjack::config::redis
-    # flapjack::config::processor
-    # flapjack::config::notifier
-    # flapjack::config::nagios
-    # flapjack::config::gateway::email
-
-  #file { '/etc/init.d/flapjack-web-api':
-  #  source  => 'puppet:///modules/flapjack/etc/init.d/flapjack-web-api',
-  #}
-
-  # install and configure logrotate
-#  if ! defined(Package['logrotate']) {
-#    ensure_packages['logrotate']
-#  }
-
+  # Logrotate
   if ($flapjack::setup_logrotate) {
-	  file { "/etc/logrotate.d/flapjack":
-	    ensure  => file,
-	    content => template('flapjack/flapjack_logrotate.conf.erb'),
-	  }
+    Package[$flapjack::package_name]
+    ->
+    logrotate::rule { 'flapjack':
+      path         => "${flapjack::log_dir}/*.log",
+      rotate       => $flapjack::rotate_count,
+      rotate_every => $flapjack::rotate_every,
+      copytruncate => true,
+      missingok    => true,
+      ifempty      => false,
+      compress     => true,
+    }
   }
 
+  # Embedded Redis
   if ($flapjack::embedded_redis) {
     case $::osfamily {
-      'redhat': {
-		    file { '/etc/init.d/redis-flapjack':
-		      mode   => '0744',
-		      source => 'puppet:///modules/flapjack/redis-flapjack.init',
-		    }
-		    file { '/opt/flapjack/embedded/etc/redis/redis-flapjack.conf':
-		      source  => 'puppet:///modules/flapjack/redis-flapjack.conf',
-		    }
+      'RedHat': {
+        file { '/etc/init.d/redis-flapjack':
+          mode   => '0744',
+          source => 'puppet:///modules/flapjack/redis-flapjack.init',
+        }
+        file { '/opt/flapjack/embedded/etc/redis/redis-flapjack.conf':
+          source  => 'puppet:///modules/flapjack/redis-flapjack.conf',
+        }
       }
-      default: {}
+      default: {
+        fail("Embedded Redis is currently not supported on Operating System ${::osfamily}.")
+      }
     }
   }
 }

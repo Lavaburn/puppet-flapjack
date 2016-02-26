@@ -1,7 +1,7 @@
 begin
   require 'rest-client' if Puppet.features.rest_client?
   require 'json' if Puppet.features.json?
-  #require 'yaml/store'
+  require 'yaml/store' if Puppet.features.yaml?
 rescue LoadError => e
   Puppet.info "Flapjack Puppet module requires 'rest-client' and 'json' ruby gems."
 end
@@ -10,6 +10,7 @@ class Puppet::Provider::FlapjackRest < Puppet::Provider
   desc "Flapjack API REST calls"
   
   confine :feature => :json
+  confine :feature => :yaml
   confine :feature => :rest_client
   
   def initialize(value={})
@@ -18,50 +19,28 @@ class Puppet::Provider::FlapjackRest < Puppet::Provider
   end
     
   def self.get_rest_info
-#    config_file = "/etc/puppet/cabot_api.yaml"
-#    
-#    data = File.read(config_file) or raise "Could not read setting file #{config_file}"    
-#    yamldata = YAML.load(data)
-#        
-#    if yamldata.include?('ip')
-#      ip = yamldata['ip']
-#    else
-#      ip = 'localhost'
-      ip = 'monitor-master.pool1.twr1.rcswimax.com'
-#    end
-#
-#    if yamldata.include?('port')
-#      port = yamldata['port']
-#    else
+    config_file = "/etc/flapjack/puppet_api.yaml"
+
+    data = File.read(config_file) or raise "Could not read setting file #{config_file}"    
+    yamldata = YAML.load(data)
+
+    if yamldata.include?('ip')
+      ip = yamldata['ip']
+    else
+      ip = 'localhost'
+    end
+
+    if yamldata.include?('port')
+      port = yamldata['port']
+    else
       port = '3081'
-#    end
-#
-#    if yamldata.include?('username')
-#      username = yamldata['username']
-#    else
-#      raise "The configuration file #{config_file} should include username!"
-#    end
-#
-#    if yamldata.include?('password')
-#      password = yamldata['password']
-#    else
-#      raise "The configuration file #{config_file} should include password!"
-#    end
-#
-#    if yamldata.include?('users')
-#      users = yamldata['users']
-#    else
-#      raise "The configuration file #{config_file} should include 'users' hash (id => username)!"
-#    end
-#      
+    end
+
     result = { 
-      :ip       => ip, 
-      :port     => port,
-#      :username => username,
-#      :password => password,
-#      :users    => users,
+      :ip   => ip, 
+      :port => port,
     }
-    
+
     result
   end
   

@@ -1,40 +1,78 @@
-# === Parameters
+# Class: flapjack
 #
-# [*package*]
-#   package file for custom DEB installation (RPM not currently supported)
-# [*repo_version*]
-#   APT repository version
-# [*repo*]
-#   APT repository
-# [*embedded_redis*]
-#   use embedded redis. Default: true
-# [*setup_logrotate*]
-#   Setup the logrotate config
+# This module manages Flapjack
+#
+# Parameters:
+# * repo_version (string): Repository version (0.9/v1/v2). Default: v1
+# * repo_name (string): Repository (main/experimental). Default: main
+# * package_name (string): Name of the package to install. Default: flapjack
+# * package_version (string): Version of the package to install. Default: installed
+# * package_source (string): Package file for custom DEB/RPM installation
+# * setup_logrotate (boolean): Whether to set up logrotate. Default: false
+# * log_dir (path): Path to the log directory. Default: /var/log/flapjack
+# * rotate_count (integer): Frequency of logrotation. Allowed: hour/day/week/month/year. Default: 'week'
+# * rotate_every (string): Archive count of logrotation. Default: 12
+# * embedded_redis (boolean): Whether to use embedded Redis. Default: false
+# * install_flapjackfeeder (boolean): Whether to install flapjackfeeder.o. Default: false
+# * manage_flapjackfeeder_lib (boolean): Whether to manage library directory for flapjackfeeder.o. Default: false
+#
+# === Dependencies/Requirements
+# see README
+#
+# === Authors
+#
+# Nicolas Truyens <nicolas@truyens.com>
+#
 class flapjack (
-  # Repository/Package
-  $version         = 'installed',
-  $package         = undef,
-  $repo_version    = 'v1',
-  $repo            = 'main',
-  $embedded_redis  = true,
+  # Repository
+  $repo_version = 'v1',
+  $repo_name    = 'main',
+
+  # Package
+  $package_name    = 'flapjack',
+  $package_version = 'installed',
+  $package_source  = undef,
+
+  # Configuration
   $setup_logrotate = false,
+  $log_dir         = '/var/log/flapjack',
+  $rotate_count    = 12,
+  $rotate_every    = 'week',
+  $embedded_redis  = false,
+
+  # Flapjackfeeder
+  $install_flapjackfeeder       = false,
+  $manage_flapjackfeeder_libdir = false,
+
+  # Service
+  $service_name                   = 'flapjack',
+  $service_ensure                 = 'running',
+  $embedded_redis_service_name    = 'redis-flapjack',
+  $embedded_redis_service_ensure  = 'running',
 ) {
-  if ($package == undef) {
-	  class { 'flapjack::repo':
+  # Validation
+  validate_re($repo_version, ['0.9', 'v1', 'v2'])
+  validate_re($repo_name, ['main', 'experimental'])
+  validate_string($package_name, $package_version)
+  validate_bool($setup_logrotate, $embedded_redis)
+  validate_absolute_path($log_dir)
+  validate_re($rotate_every, ['hour', 'day', 'week', 'month', 'year'])
+  validate_bool($install_flapjackfeeder, $manage_flapjackfeeder_libdir)
 
-    } -> Class['flapjack::install']
-  }
+  # Sub-classes
+  include flapjack::install
+  include flapjack::config
+  include flapjack::flapjackfeeder
+  include flapjack::service
 
-  class { 'flapjack::install':
-
-  } ->
-  class { 'flapjack::config':
-
-  } ~>
-  class { 'flapjack::service':
-
-  } ->
-  class { 'flapjack::flapjackfeeder':
-
-  } -> Class['flapjack']
+  # Dependency Chain
+  Class['::flapjack']
+  ->
+  Class['flapjack::install']
+  ->
+  Class['flapjack::config']
+  ->
+  Class['flapjack::flapjackfeeder']
+  ~>
+  Class['flapjack::service']
 }

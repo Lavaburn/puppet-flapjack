@@ -170,8 +170,19 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
     end
     
     if resource[:linked_entities] != current[:linked_entities]
-      add = resource[:linked_entities] - current[:linked_entities]
-      remove = current[:linked_entities] - resource[:linked_entities]
+      if resource[:linked_entities] != nil 
+        future = resource[:linked_entities]
+      else
+        future = Array.new
+      end
+      if current[:linked_entities] != nil 
+        now = current[:linked_entities]
+      else
+        now = Array.new
+      end
+      
+      add = future - now
+      remove = now - future
       
       add.each do |entity|
         op = {
@@ -200,6 +211,12 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
     end
     
     if resource[:default_rule_blackholes] != current[:default_rule_blackholes]
+      if resource[:default_rule_blackholes] != nil
+        blackholes = resource[:default_rule_blackholes]
+      else
+        blackholes = Array.new
+      end      
+            
       ruleId = self.class.findDefaultNotificationRule(resource[:name])
       
       operations = Array.new
@@ -207,21 +224,21 @@ Puppet::Type.type(:flapjack_contact).provide :rest, :parent => Puppet::Provider:
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/critical_blackhole',
-        :value => (resource[:default_rule_blackholes].include?"critical"),
+        :value => (blackholes.include?"critical"),
       }
       operations.push op
 
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/warning_blackhole',
-        :value => (resource[:default_rule_blackholes].include?"warning"),
+        :value => (blackholes.include?"warning"),
       }
       operations.push op
       
       op = {
         :op    => 'replace',
         :path  => '/notification_rules/0/unknown_blackhole',
-        :value => (resource[:default_rule_blackholes].include?"unknown"),
+        :value => (blackholes.include?"unknown"),
       }
       operations.push op
       

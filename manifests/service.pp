@@ -1,29 +1,19 @@
+# Class: flapjack::service
+#
+# Private class. Only calling flapjack main class is supported.
+#
 class flapjack::service {
-  service { 'flapjack':
-	  ensure     => running,
-		enable     => true,
-		hasstatus  => true,
-		hasrestart => false,
-#		require    => [
-#		  File['/etc/flapjack/flapjack_config.yaml'],
-#	  ],
-		subscribe  => [
-		  Package['flapjack'],
-			#File['/etc/flapjack/flapjack_config.yaml'],
-	  ]
+  # Flapjack Service
+  Package[$flapjack::package_name]
+  ~>
+  service { $flapjack::service_name:
+    ensure => $flapjack::service_ensure,
   }
 
-	if $flapjack::embedded_redis {
-		service { 'redis-flapjack':
-		  ensure => running,
-			enable => true,
-	 }
+  # Embedded Redis Service
+  if $flapjack::embedded_redis {
+    service { $flapjack::embedded_redis_service_name:
+      ensure => $flapjack::embedded_redis_service_ensure,
+    }
   }
-# Don't even set it up?
-#  else {
-#	  service { 'redis-flapjack':
-#		  ensure     => stopped,
-#			enable     => false,
-#		}
-#	}
 }

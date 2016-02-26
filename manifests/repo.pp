@@ -1,12 +1,13 @@
+# Class: flapjack::repo
+#
+# Private class. Only calling flapjack main class is supported.
+#
 class flapjack::repo {
-  validate_re($flapjack::repo, ['main', 'experimental'])
-  validate_re($flapjack::repo_version, ['0.9', 'v1'])
-
   case $::osfamily {
-    'redhat': {
-      yumrepo { "flapjack-v1" :
-        descr           => "Flapjack, an alert router",
-        baseurl         => "http://packages.flapjack.io/rpm/${flapjack::repo_version}/flapjack-${flapjack::repo}/centos/${operatingsystemmajrelease}/${architecture}",
+    'RedHat': {
+      yumrepo { 'flapjack' :
+        descr           => 'Flapjack, an alert router',
+        baseurl         => "http://packages.flapjack.io/rpm/${flapjack::repo_version}/flapjack-${flapjack::repo_name}/centos/${::operatingsystemmajrelease}/${::architecture}",
         enabled         => 1,
         gpgcheck        => 0,
         gpgkey          => absent,
@@ -14,15 +15,17 @@ class flapjack::repo {
         metadata_expire => absent,
       }
     }
-    'debian': {
+    'Debian': {
       include ::apt
 
       apt::source { 'flapjack':
-        location    => "http://packages.flapjack.io/deb/${flapjack::repo_version}",
-        repos       => $flapjack::repo,
-        key         => '803709B6', # TODO - FULL FINGERPRINT: A9355790877AB44E94580A8E8406B0E3803709B6
-        # No longer supported? - include_src => false,
+        location => "http://packages.flapjack.io/deb/${flapjack::repo_version}",
+        repos    => $flapjack::repo_name,
+        key      => 'A9355790877AB44E94580A8E8406B0E3803709B6',
       }
+    }
+    default: {
+      fail("Operating System ${::osfamily} is not supported currently.")
     }
   }
 }
