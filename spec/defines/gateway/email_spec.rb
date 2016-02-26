@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'yaml'
 
 describe 'flapjack::config::gateway::email', :type => :define do
   Puppet::Util::Log.level = :warning
@@ -44,7 +45,7 @@ describe 'flapjack::config::gateway::email', :type => :define do
       it { should contain_flapjack__config__template_config('flapjack_customtitle_gateways_email') }
         
       it { should contain_yaml_setting("flapjack_customtitle_gateways_email_templates_a").with_key('testing/gateways/email/templates/a') }
-      it { should contain_yaml_setting("flapjack_customtitle_gateways_email_templates_b").with_value('2B') }              
+      it { should contain_yaml_setting("flapjack_customtitle_gateways_email_templates_b").with_value('2B') }      
     end
     
     context "authenticated" do
