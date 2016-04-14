@@ -107,9 +107,6 @@ define flapjack::config::gateway::sms_twilio (
 
   # Restart Service
   if ($refresh_service) {
-    Flapjack::Config::Gateway::Sms_twilio[$name] ~> Service[$flapjack::service_name]
+    Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Sms_twilio[$name] ~> Service[$flapjack::service_name]
   }
-
-  # Ordering
-  Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Sms_twilio[$name]
 }

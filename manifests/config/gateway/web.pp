@@ -104,9 +104,6 @@ define flapjack::config::gateway::web (
 
   # Restart Service
   if ($refresh_service) {
-    Flapjack::Config::Gateway::Web[$name] ~> Service['flapjack']
+    Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Web[$name] ~> Service['flapjack']
   }
-
-  # Ordering
-  Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Web[$name]
 }

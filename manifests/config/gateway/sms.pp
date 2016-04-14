@@ -107,9 +107,6 @@ define flapjack::config::gateway::sms (
 
   # Restart Service
   if ($refresh_service) {
-    Flapjack::Config::Gateway::Sms[$name] ~> Service[$flapjack::service_name]
+    Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Sms[$name] ~> Service[$flapjack::service_name]
   }
-
-  # Ordering
-  Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Sms[$name]
 }

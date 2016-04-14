@@ -132,9 +132,6 @@ define flapjack::config::gateway::oobetet (
 
   # Restart Service
   if ($refresh_service) {
-    Flapjack::Config::Gateway::Oobetet[$name] ~> Service[$flapjack::service_name]
+    Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Oobetet[$name] ~> Service[$flapjack::service_name]
   }
-
-  # Ordering
-  Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Oobetet[$name]
 }

@@ -88,9 +88,6 @@ define flapjack::config::gateway::jsonapi (
 
   # Restart Service
   if ($refresh_service) {
-    Flapjack::Config::Gateway::Jsonapi[$name] ~> Service['flapjack']
+    Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Jsonapi[$name] ~> Service['flapjack']
   }
-
-  # Ordering
-  Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Jsonapi[$name]
 }

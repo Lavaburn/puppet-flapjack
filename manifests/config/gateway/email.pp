@@ -161,9 +161,6 @@ define flapjack::config::gateway::email (
 
   # Restart Service
   if ($refresh_service) {
-    Flapjack::Config::Gateway::Email[$name] ~> Service[$flapjack::service_name]
+    Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Email[$name] ~> Service[$flapjack::service_name]
   }
-
-  # Ordering
-  Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Email[$name]
 }

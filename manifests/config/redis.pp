@@ -73,9 +73,6 @@ define flapjack::config::redis (
 
   # Restart Service
   if ($refresh_service) {
-    Flapjack::Config::Redis[$name] ~> Service[$flapjack::service_name]
+    Package[$flapjack::package_name] -> Flapjack::Config::Redis[$name] ~> Service[$flapjack::service_name]
   }
-
-  # Ordering
-  Package[$flapjack::package_name] -> Flapjack::Config::Redis[$name]
 }
