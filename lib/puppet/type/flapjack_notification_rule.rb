@@ -16,41 +16,105 @@ Puppet::Type.newtype(:flapjack_notification_rule) do
   newproperty(:entities, :array_matching => :all) do
     desc "The entities linked to the rule"
     defaultto Array.new
+
+    def insync?(is)
+      if is.is_a?(Array) and @should.is_a?(Array)
+        is.sort == @should.sort
+      else
+        is == @should
+      end
+    end
   end
   
   newproperty(:regex_entities, :array_matching => :all) do
     desc "The regular expression grouping entities linked to the rule"
     defaultto Array.new
+
+    def insync?(is)
+      if is.is_a?(Array) and @should.is_a?(Array)
+        is.sort == @should.sort
+      else
+        is == @should
+      end
+    end
   end
   
   newproperty(:tags, :array_matching => :all) do
     desc "The tags linked to the rule"
     defaultto Array.new
+
+    def insync?(is)
+      if is.is_a?(Array) and @should.is_a?(Array)
+        is.sort == @should.sort
+      else
+        is == @should
+      end
+    end    
   end
   
   newproperty(:regex_tags, :array_matching => :all) do
     desc "The regular expression grouping tags linked to the rule"
     defaultto Array.new
+
+    def insync?(is)
+      if is.is_a?(Array) and @should.is_a?(Array)
+        is.sort == @should.sort
+      else
+        is == @should
+      end
+    end
   end
   
   newproperty(:time_restrictions, :array_matching => :all) do
     desc "Time restrictions applied to this rule"
     defaultto Array.new
+
+    def insync?(is)
+      if is.is_a?(Array) and @should.is_a?(Array)
+        is.sort == @should.sort
+      else
+        is == @should
+      end
+    end
   end
   
   newproperty(:unknown_media, :array_matching => :all) do
     desc "Media that can be used for Unknown State"
     defaultto Array.new
+
+    def insync?(is)
+      if is.is_a?(Array) and @should.is_a?(Array)
+        is.sort == @should.sort
+      else
+        is == @should
+      end
+    end
   end
   
   newproperty(:warning_media, :array_matching => :all) do
     desc "Media that can be used for Warning State"
     defaultto Array.new
+
+    def insync?(is)
+      if is.is_a?(Array) and @should.is_a?(Array)
+        is.sort == @should.sort
+      else
+        is == @should
+      end
+    end
   end
   
   newproperty(:critical_media, :array_matching => :all) do
     desc "Media that can be used for Critical State"
     defaultto Array.new
+
+    def insync?(is)
+      if is.is_a?(Array) and @should.is_a?(Array)
+        is.sort == @should.sort
+      else
+        is == @should
+      end
+    end
   end
   
   newproperty(:unknown_blackhole) do
