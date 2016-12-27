@@ -67,7 +67,7 @@ Puppet::Type.type(:flapjack_entity).provide :rest, :parent => Puppet::Provider::
       {
         :id          => object["id"],   
         :name        => object["name"], 
-#        :entity_tags => tags,  
+        :entity_tags => [],
         :ensure      => :present
       }
     end
