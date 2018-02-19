@@ -9,14 +9,7 @@ describe 'flapjack::config::gateway::oobetet', :type => :define do
   ]}
     
   context "ubuntu" do
-  	let(:facts) { {
-	  	:osfamily 					      => 'Debian',
-	  	:operatingsystem 			    => 'Ubuntu',
-	  	:lsbdistid					      => 'Ubuntu',
-	  	:lsbdistcodename 			    => 'precise',
-	  	:operatingsystemrelease 	=> '12.04',
-	  	:concat_basedir  			    => '/tmp', # Concat	 
-	  } }
+  	let(:facts) { ubuntu_facts }
 
     context "default" do
       let(:title) {

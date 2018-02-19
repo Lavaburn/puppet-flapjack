@@ -17,12 +17,36 @@ fixture_path = File.expand_path(File.join(__FILE__, '..', 'fixtures'))
 #end
 
 # Common code for (most) spec tests
-RSpec.configure do |c|
+#RSpec.configure do |c|
 #  c.before do 
-#    @flapjack_common =
-#      "class { 'flapjack':
-#
-#      }
-#      "
+#    
 #  end
+#end
+
+def ubuntu_facts
+  {
+    :osfamily                  => 'Debian',
+    :operatingsystem           => 'Ubuntu',
+    :lsbdistid                 => 'Ubuntu',
+    :lsbdistcodename           => 'precise',
+    :operatingsystemrelease    => '12.04',
+    :operatingsystemmajrelease => '12.04',
+    :concat_basedir            => '/tmp',  # Concat
+    :puppetversion             => '4.8.1', # Apt
+    :virtualenv_version        => '12.0', # Should not matter for spec tests (python dependency)
+  }
+end
+
+def centos_facts
+  {
+    :architecture              => 'amd64',
+    :osfamily                  => 'RedHat',
+    :operatingsystem           => 'CentOS',
+    :operatingsystemrelease    => '6.0',
+    :operatingsystemmajrelease => '6',
+    :lsbmajdistrelease         => '6',
+    :concat_basedir            => '/tmp',  # Concat
+    :puppetversion             => '4.8.1', # Apt
+    :clientcert                => 'centos',  # HIERA !!!
+  }
 end

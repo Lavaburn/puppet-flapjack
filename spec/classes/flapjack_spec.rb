@@ -5,13 +5,7 @@ describe 'flapjack' do
   Puppet::Util::Log.newdestination(:console)
   
   context "ubuntu" do
-  	let(:facts) { {
-	  	:osfamily 					    => 'Debian',
-	  	:operatingsystem 			  => 'Ubuntu',
-	  	:lsbdistid					    => 'Ubuntu',
-	  	:lsbdistcodename 			  => 'precise',
-	  	:operatingsystemrelease => '12.04',
-	  } }
+  	let(:facts) { ubuntu_facts }
 	  
 	  context "ubuntu_defaults" do	  
 		  it { should compile.with_all_deps }
@@ -64,13 +58,7 @@ describe 'flapjack' do
   end
   
   context "centos" do
-  	let(:facts) { {
-	    :osfamily 				      => 'RedHat',
-	  	:operatingsystem 		    => 'CentOS',
-	  	:operatingsystemrelease => '6.0',
-	  	:lsbmajdistrelease      => '6',
-	  	:clientcert				      => 'centos',	# HIERA !!!
-	  } }
+  	let(:facts) { centos_facts }
 	  
     context "centos_defaults" do
       it { should compile.with_all_deps }

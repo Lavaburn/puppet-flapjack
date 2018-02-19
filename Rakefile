@@ -28,23 +28,22 @@ exclude_paths = [
 PuppetSyntax.exclude_paths = exclude_paths
 
 
-# Overwrite default lint task
-Rake::Task[:lint].clear
-# Puppet Lint config
 PuppetLint::RakeTask.new :lint do |config|
-  #config.relative = true           # BUG in 1.1.0 - does not work ?  
-  config.with_context = true  
-  config.fail_on_warnings = true
-  
-  config.fix = false
-  
-  config.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
-  
-  config.disable_checks = [ "80chars", "class_inherits_from_params_class" ] # class_parameter_defaults
-    
   config.ignore_paths = exclude_paths
-end
+  
+  config.disable_checks = [
+    "80chars", "140chars", 
+    "variable_is_lowercase", "class_inherits_from_params_class",
+    "relative_classname_inclusion", "trailing_comma",
+    "variable_contains_upcase", "version_comparison",
+    "variable_is_lowercase", "arrow_on_right_operand_line"
+  ]
 
+  config.with_context = true
+  config.relative = true
+  #  config.log_format = '%{filename} - %{message}'
+  #  config.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
+end
 
 # Extra Tasks
 desc "Run metadata, syntax, lint, and spec tests."
