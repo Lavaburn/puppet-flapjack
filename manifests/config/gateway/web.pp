@@ -21,34 +21,26 @@
 #
 define flapjack::config::gateway::web (
   # Common Config
-  $config_dir      = '/etc/flapjack',
-  $config_file     = 'flapjack_config.yaml',
-  $environment     = 'production',
-  $refresh_service = true,
+  String $config_dir       = '/etc/flapjack',
+  String $config_file      = 'flapjack_config.yaml',
+  String $environment      = 'production',
+  Boolean $refresh_service = true,
 
   # Parameters
-  $enabled         = true,
-  $port            = 3080,
-  $timeout         = 300,
-  $auto_refresh    = 120,
-  $api_url         = 'http://localhost:3081/',
-  $logo_image_path = undef,
+  Boolean $enabled                  = true,
+  Integer $port                     = 3080,
+  Integer $timeout                  = 300,
+  Integer $auto_refresh             = 120,
+  String $api_url                   = 'http://localhost:3081/',
+  Optional[String] $logo_image_path = undef,
 
   # Logging
-  $log_dir         = '/var/log/flapjack',
-  $access_log      = 'web_access.log',
+  String $log_dir    = '/var/log/flapjack',
+  String $access_log = 'web_access.log',
 
-  $log_level       = 'INFO',
-  $syslog_errors   = true,
+  String $log_level      = 'INFO',
+  Boolean $syslog_errors = true,
 ) {
-  # Validation
-  validate_absolute_path($config_dir)
-  validate_string($config_file, $environment)
-  validate_bool($refresh_service)
-  validate_absolute_path($log_dir)
-  validate_string($api_url, $access_log, $log_level)
-  validate_bool($enabled, $syslog_errors)
-
   # Common Config
   Yaml_setting {
     target => "${config_dir}/${config_file}",

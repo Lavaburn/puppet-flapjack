@@ -18,31 +18,24 @@
 #
 define flapjack::config::gateway::sns (
   # Common Config
-  $config_dir      = '/etc/flapjack',
-  $config_file     = 'flapjack_config.yaml',
-  $environment     = 'production',
-  $refresh_service = true,
+  String $config_dir       = '/etc/flapjack',
+  String $config_file      = 'flapjack_config.yaml',
+  String $environment      = 'production',
+  Boolean $refresh_service = true,
 
   # Parameters
-  $enabled       = true,
-  $queue         = 'sns_notifications',
+  Boolean $enabled = true,
+  String $queue    = 'sns_notifications',
 
   # Amazon SNS
-  $access_key    = 'AKIAIOSFODNN7EXAMPLE',
-  $secret_key    = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
-  $region_name   = undef,
+  String $access_key            = 'AKIAIOSFODNN7EXAMPLE',
+  String $secret_key            = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+  Optional[String] $region_name = undef,
 
   # Logging
-  $log_level     = 'INFO',
-  $syslog_errors = true,
+  String $log_level      = 'INFO',
+  Boolean $syslog_errors = true,
 ) {
-  # Validation
-  validate_absolute_path($config_dir)
-  validate_string($config_file, $environment)
-  validate_bool($refresh_service)
-  validate_string($queue, $access_key, $secret_key, $log_level)
-  validate_bool($enabled, $syslog_errors)
-
   # Common Config
   Yaml_setting {
     target => "${config_dir}/${config_file}",

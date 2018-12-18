@@ -16,28 +16,21 @@
 #
 define flapjack::config::gateway::pagerduty (
   # Common Config
-  $config_dir      = '/etc/flapjack',
-  $config_file     = 'flapjack_config.yaml',
-  $environment     = 'production',
-  $refresh_service = true,
+  String $config_dir       = '/etc/flapjack',
+  String $config_file      = 'flapjack_config.yaml',
+  String $environment      = 'production',
+  Boolean $refresh_service = true,
 
   # Parameters
-  $enabled       = true,
-  $queue         = 'pagerduty_notifications',
+  Boolean $enabled = true,
+  String $queue    = 'pagerduty_notifications',
 
-  $templates     = undef,
+  Optional[Hash] $templates = undef,
 
   # Logging
-  $log_level     = 'INFO',
-  $syslog_errors = true,
+  String $log_level      = 'INFO',
+  Boolean $syslog_errors = true,
 ) {
-  # Validation
-  validate_absolute_path($config_dir)
-  validate_string($config_file, $environment)
-  validate_bool($refresh_service)
-  validate_string($queue, $log_level)
-  validate_bool($enabled, $syslog_errors)
-
   # Common Config
   Yaml_setting {
     target => "${config_dir}/${config_file}",

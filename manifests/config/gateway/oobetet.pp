@@ -24,41 +24,32 @@
 #
 define flapjack::config::gateway::oobetet (
   # Common Config
-  $config_dir      = '/etc/flapjack',
-  $config_file     = 'flapjack_config.yaml',
-  $environment     = 'production',
-  $refresh_service = true,
+  String $config_dir       = '/etc/flapjack',
+  String $config_file      = 'flapjack_config.yaml',
+  String $environment      = 'production',
+  Boolean $refresh_service = true,
 
   # Parameters
-  $enabled           = true,
+  Boolean $enabled = true,
 
   # Jabber Server
-  $server            = 'jabber.example.com',
-  $port              = 5222,
-  $id                = 'flapjacktest@jabber.example.com',
-  $password          = 'nuther-good-password',
-  $oobetet_alias     = 'flapjacktest',
+  String $server        = 'jabber.example.com',
+  Integer $port         = 5222,
+  String $id            = 'flapjacktest@jabber.example.com',
+  String $password      = 'nuther-good-password',
+  String $oobetet_alias = 'flapjacktest',
 
-  $watched_check     = 'PING',
-  $watched_entity    = 'foo.example.com',
-  $max_latency       = 300,
+  String $watched_check  = 'PING',
+  String $watched_entity = 'foo.example.com',
+  Integer $max_latency   = 300,
 
-  $pagerduty_contact = '11111111111111111111111111111111',
-  $rooms             = [ 'flapjacktest@conference.jabber.example.com' ],
+  String $pagerduty_contact = '11111111111111111111111111111111',
+  Array $rooms              = [ 'flapjacktest@conference.jabber.example.com' ],
 
   # Logging
-  $log_level         = 'INFO',
-  $syslog_errors     = true,
+  String $log_level      = 'INFO',
+  Boolean $syslog_errors = true,
 ) {
-  # Validation
-  validate_absolute_path($config_dir)
-  validate_string($config_file, $environment)
-  validate_bool($refresh_service)
-  validate_string($server, $id, $password, $oobetet_alias, $watched_check)
-  validate_string($watched_entity, $pagerduty_contact, $log_level)
-  validate_bool($enabled, $syslog_errors)
-  validate_array($rooms)
-
   # Common Config
   Yaml_setting {
     target => "${config_dir}/${config_file}",

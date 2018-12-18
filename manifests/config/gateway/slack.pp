@@ -1,14 +1,13 @@
-# == Definition: flapjack::config::gateway::hipchat
+# == Definition: flapjack::config::gateway::slack
 #
 # This definition changes Flapjack configuration:
-# - Gateway: Hipchat (Room Notifications)
+# - Gateway: Slack (Webhook)
 #
 # === Parameters:
 # Common Parameters: See flapjack::config::base
 #
-# * enabled (boolean): Whether to enable the Hipchat Gateway. Default: true
+# * enabled (boolean): Whether to enable the Slack Gateway. Default: true
 # * queue (string): Queue name of the alerts that should be sent out using this gateway method. Default: jabber_notifications
-# * auth_token (string): API Authentication Token for Hipchat API v2
 # * format (string): Format to use for notifications. Default: 'text'
 # * templates (hash): Templates used when composing the SMS body. Default: undef
 #
@@ -16,10 +15,9 @@
 #
 # Nicolas Truyens <nicolas@truyens.com>
 #
-define flapjack::config::gateway::hipchat (
-  # Hipchat API
-  String $auth_token,
-  String $format      = 'text',
+define flapjack::config::gateway::slack (
+  # Slack API
+  String $format = 'text',
 
   # Common Config
   String $config_dir       = '/etc/flapjack',
@@ -29,7 +27,7 @@ define flapjack::config::gateway::hipchat (
 
   # Parameters
   Boolean $enabled = true,
-  String $queue    = 'hipchat_notifications',
+  String $queue    = 'slack_notifications',
 
   Optional[Hash] $templates = undef,
 
@@ -42,9 +40,9 @@ define flapjack::config::gateway::hipchat (
     target => "${config_dir}/${config_file}",
   }
 
-  # Hipchat Gateway
-  $title_prefix = "flapjack_${name}_gateways_hipchat"
-  $key_prefix = "${environment}/gateways/hipchat"
+  # Slack Gateway
+  $title_prefix = "flapjack_${name}_gateways_slack"
+  $key_prefix = "${environment}/gateways/slack"
 
   yaml_setting { "${title_prefix}_enabled":
     key   => "${key_prefix}/enabled",
@@ -54,11 +52,6 @@ define flapjack::config::gateway::hipchat (
   yaml_setting { "${title_prefix}_queue":
     key   => "${key_prefix}/queue",
     value => $queue,
-  }
-
-  yaml_setting { "${title_prefix}_auth_token":
-    key   => "${key_prefix}/auth_token",
-    value => $auth_token,
   }
 
   yaml_setting { "${title_prefix}_format":
@@ -79,8 +72,8 @@ define flapjack::config::gateway::hipchat (
   $title_prefix_notifier = "flapjack_${environment}_notifier"
   $key_prefix_notifier = "${environment}/notifier"
 
-  yaml_setting { "${title_prefix_notifier}_hipchat_queue":
-    key   => "${key_prefix_notifier}/hipchat_queue",
+  yaml_setting { "${title_prefix_notifier}_slack_queue":
+    key   => "${key_prefix_notifier}/slack_queue",
     value => $queue,
   }
 
@@ -93,6 +86,6 @@ define flapjack::config::gateway::hipchat (
 
   # Restart Service
   if ($refresh_service) {
-    Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Hipchat[$name] ~> Service[$flapjack::service_name]
+    Package[$flapjack::package_name] -> Flapjack::Config::Gateway::Slack[$name] ~> Service[$flapjack::service_name]
   }
 }

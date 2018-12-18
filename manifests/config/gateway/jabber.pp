@@ -23,38 +23,30 @@
 #
 define flapjack::config::gateway::jabber (
   # Common Config
-  $config_dir      = '/etc/flapjack',
-  $config_file     = 'flapjack_config.yaml',
-  $environment     = 'production',
-  $refresh_service = true,
+  String $config_dir       = '/etc/flapjack',
+  String $config_file      = 'flapjack_config.yaml',
+  String $environment      = 'production',
+  Boolean $refresh_service = true,
 
   # Parameters
-  $enabled       = true,
-  $queue         = 'jabber_notifications',
+  Boolean $enabled = true,
+  String $queue    = 'jabber_notifications',
 
   # Jabber XMPP
-  $server        = 'jabber.example.com',
-  $port          = 5222,
-  $id            = 'flapjack@jabber.example.com',
-  $password      = 'good-password',
-  $jabber_alias  = 'flapjack',
-  $identifiers   = [ '@flapjack' ],
-  $rooms         = [ 'gimp@conference.jabber.example.com' ],
+  String $server       = 'jabber.example.com',
+  Integer $port        = 5222,
+  String $id           = 'flapjack@jabber.example.com',
+  String $password     = 'good-password',
+  String $jabber_alias = 'flapjack',
+  Array $identifiers   = [ '@flapjack' ],
+  Array $rooms         = [ 'gimp@conference.jabber.example.com' ],
 
-  $templates     = undef,
+  Optional[Hash] $templates = undef,
 
   # Logging
-  $log_level     = 'INFO',
-  $syslog_errors = true,
+  String $log_level      = 'INFO',
+  Boolean $syslog_errors = true,
 ) {
-  # Validation
-  validate_absolute_path($config_dir)
-  validate_string($config_file, $environment)
-  validate_bool($refresh_service)
-  validate_string($queue, $server, $id, $password, $jabber_alias, $log_level)
-  validate_bool($enabled, $syslog_errors)
-  validate_array($identifiers, $rooms)
-
   # Common Config
   Yaml_setting {
     target => "${config_dir}/${config_file}",

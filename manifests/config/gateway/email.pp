@@ -24,38 +24,31 @@
 #
 define flapjack::config::gateway::email (
   # Common Config
-  $config_dir      = '/etc/flapjack',
-  $config_file     = 'flapjack_config.yaml',
-  $environment     = 'production',
-  $refresh_service = true,
+  String $config_dir       = '/etc/flapjack',
+  String $config_file      = 'flapjack_config.yaml',
+  String $environment      = 'production',
+  Boolean $refresh_service = true,
 
   # Parameters
-  $enabled        = true,
-  $queue          = 'email_notifications',
+  Boolean $enabled = true,
+  String $queue    = 'email_notifications',
 
   # SMTP
-  $smtp_from      = undef,
-  $smtp_host      = '127.0.0.1',
-  $smtp_port      = 25,
-  $smtp_starttls  = false,
-  $smtp_domain    = 'localhost',
-  $smtp_auth      = false,
-  $smtp_auth_user = undef,
-  $smtp_auth_pass = undef,
+  Optional[String] $smtp_from      = undef,
+  String $smtp_host                = '127.0.0.1',
+  Integer $smtp_port               = 25,
+  Boolean $smtp_starttls           = false,
+  String $smtp_domain              = 'localhost',
+  Boolean $smtp_auth               = false,
+  Optional[String] $smtp_auth_user = undef,
+  Optional[String] $smtp_auth_pass = undef,
 
-  $templates      = undef,
+  Optional[Hash] $templates = undef,
 
   # Logging
-  $log_level      = 'INFO',
-  $syslog_errors  = true,
+  String $log_level      = 'INFO',
+  Boolean $syslog_errors = true,
 ) {
-  # Validation
-  validate_absolute_path($config_dir)
-  validate_string($config_file, $environment)
-  validate_bool($refresh_service, $smtp_auth)
-  validate_string($queue, $smtp_host, $smtp_domain)
-  validate_bool($enabled, $smtp_starttls)
-
   # Common Config
   Yaml_setting {
     target => "${config_dir}/${config_file}",
