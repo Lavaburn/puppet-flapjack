@@ -39,7 +39,7 @@ define flapjack::config::gateway::email (
   Integer $smtp_port               = 25,
   Boolean $smtp_starttls           = false,
   String $smtp_domain              = 'localhost',
-  Boolean $smtp_auth               = false,
+  Optional[String] $smtp_auth      = undef,
   Optional[String] $smtp_auth_user = undef,
   Optional[String] $smtp_auth_pass = undef,
 
@@ -101,7 +101,7 @@ define flapjack::config::gateway::email (
     value => $smtp_domain,
   }
 
-  if ($smtp_auth) {
+  if ($smtp_auth != undef) {
     validate_string($smtp_auth_user, $smtp_auth_pass)
 
     $title_prefix_smtp_auth = "${title_prefix_smtp}_auth"
